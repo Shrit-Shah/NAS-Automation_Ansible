@@ -1,0 +1,52 @@
+- hosts: all
+  vars_files:
+  - nas_var.yml
+  vars_prompt:
+  - name: client_ip
+    prompt: Please Enter client's IP address
+    private: no 
+
+  handlers:
+  - name: Restart nfs-utils
+    service:
+        name: "nfs-utils"
+        state: "restarted"
+        enabled: yes
+
+  tasks:
+  - file:
+       state: directory
+       path: "{{ dvd_dir }}"
+
+  - mount:
+       src: "/dev/sr0"
+       path: "{{ dvd_dir }}"
+       state: mounted
+       fstype: "iso9660"
+  
+  - yum_repository:
+       baseurl: "{{ dvd_dir }}/AppStream"
+       name: "yumconfig1"
+       description: "my yum config for packages"
+       gpgcheck: no
+
+  - yum_repository:
+       baseurl: "{{ dvd_dir }}/BaseOS"
+       name: "yumconfig2"
+       description: "my yum config for packages"
+       gpgcheck: no
+
+  - package:
+       name: "nfs-utils"
+       state: present
+       
+  - file:
+       state: "directory"
+       path: "{{ nfs_dir }}"
+   
+  - template:
+       dest: "/etc/exports"
+       src: "/root/ws2/project2/exports"
+    notify:
+    - Restart nfs-utils
+    
