@@ -105,6 +105,7 @@ new_setup()
             echo "Connection Failed"
         fi
 comment
+#Remove after examining-----------------------------------------------------------------------------------------------------------------------------
 
     elif [ $server_location -eq 2 ]
     then
