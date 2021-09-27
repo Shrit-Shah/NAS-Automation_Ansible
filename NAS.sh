@@ -37,7 +37,12 @@ new_setup()
             ansible_setup "$server_ip" "$user_name" "$user_pass"
 
             #scp server.sh  ${usr_name}@${server_ip}:/tmp/ &>> /dev/null
+
+            ansible-playbook nas-playbook.yml
+
+            echo -e "\n Name and location of Backup folder on server with ip-->(${server_ip}) is \033[1m\033[4m'\NASbackup'\033[0m\033[0m\n"
             
+                      
             if [ $? -eq 0 ]
             then
                 echo -e "\nSSH connection successful\n"
