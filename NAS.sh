@@ -31,6 +31,7 @@ new_setup()
 
     if [ $server_location -eq 1 ]
     then
+        ansible_install
         client_ip=$(hostname -I | awk {'print $1}') # Client Private IP-address
         read -p "Enter private ip-address of the server system: " server_ip
         
@@ -42,8 +43,13 @@ new_setup()
         then 
             echo "Connection Successful"
 
-            read -p "Enter Server username: " usr_name
-            scp server.sh  ${usr_name}@${server_ip}:/tmp/ &>> /dev/null
+            read -p "Enter Server username: " user_name
+            read -p "Enter ${usr_name}'s password" user_pass
+
+            ansible_setup "$server_ip" "$user_name" "$user_pass"
+
+            #scp server.sh  ${usr_name}@${server_ip}:/tmp/ &>> /dev/null
+            
             if [ $? -eq 0 ]
             then
                 echo "SSH connection successful"
@@ -73,6 +79,50 @@ new_setup()
     if [ $server_location -eq 2 ]
     then
         echo "Coming Soon!!"
+    fi
+}
+
+ansible_install()
+{
+    #installing ansible on client machine
+
+    pip3 show ansible >> /dev/null
+    if [ $? -eq 1 ]
+    then
+	    pip3 install ansible >> /dev/null
+	    pip3 show ansible >> /dev/null
+	    if [ $? -eq 0 ]
+	    then
+		    echo "\n\tAnsible is installed in your system for server side configuration\n"
+        fi
+    fi
+}
+
+ansible_setup()
+{
+    #configuring inventory file for ansible
+
+    server_ip = $1
+    usr_name = $2
+    usr_pass = $3
+    connection_type = ssh
+    [ -f /root/.NAS/.ip.txt ]
+    if [ $? -eq 1 ]
+    then
+	    mkdir /root/.NAS
+	    echo "[NASserver]" > /root/.NAS/.ip.txt
+
+    else
+	    echo "${server_ip} ansible_user=${usr_name} ansible_password=${usr_pass} ansible_connection=${connection_type}" >> /root/.NAS/.ip.txt
+    fi
+
+    #configuring ansible.cfg file
+
+    [ -d /etc/ansible/ ]
+    if [ $? -eq 1 ]
+    then
+	    mkdir /etc/ansible/
+	    echo -e "[defaults]\ninventory = /root/.NAS/.ip.txt\nhost_key_checking = False\ndeprecation_warnings = False\ncommand_warnings = False" > /etc/ansible/ansible.cfg
     fi
 }
 
