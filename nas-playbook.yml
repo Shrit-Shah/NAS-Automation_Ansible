@@ -1,10 +1,6 @@
 - hosts: all
   vars_files:
   - nas_var.yml
-  vars_prompt:
-  - name: client_ip
-    prompt: Please Enter client's IP address
-    private: no 
 
   handlers:
   - name: Restart nfs-utils
@@ -42,11 +38,16 @@
        
   - file:
        state: "directory"
-       path: "{{ nfs_dir }}"
+       path: "/home/{{ server_user_name }}/Desktop/{{ server_bak_dir }}"
    
   - template:
        dest: "/etc/exports"
        src: "/root/ws2/project2/exports"
     notify:
     - Restart nfs-utils
+
+  - firewalld:
+       permanent: yes
+       immediate: yes
+       state: disabled
     
