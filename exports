@@ -1,0 +1,1 @@
+{{ nfs_dir }} {{ client_ip }}(rw, no_root_squash)
