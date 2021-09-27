@@ -34,15 +34,46 @@ new_setup()
             read -p "Enter Server username: " user_name
             read -p "Enter ${usr_name}'s password" user_pass
 
-            ansible_setup "$server_ip" "$user_name" "$user_pass"
+            ansible_setup ${server_ip} ${user_name} ${user_pass}
 
             #scp server.sh  ${usr_name}@${server_ip}:/tmp/ &>> /dev/null
 
-            ansible-playbook nas-playbook.yml
+            read -p "Name the backup folder on the Server: " server_dir
 
-            echo -e "\n Name and location of Backup folder on server with ip-->(${server_ip}) is \033[1m\033[4m'\NASbackup'\033[0m\033[0m\n"
-            
-                      
+            ansible-playbook nas-playbook.yml -e "client_ip=${client_ip} server_user_name=${user_name} server_bak_dir=${server_dir}" &>> /dev/null
+            echo -e "\n Name and location of Backup folder on server with ip-->(${server_ip}) is '\033[1m\NASbackup'\033[0m'\n"
+
+            if [ $? -eq 0 ]
+			then
+			
+				echo -e "\n Server configuration successfull. \033[1m(${server_ip})\033[0m node is now configured as \033[4mNAS Backup Server\033[0m\n"
+				echo -e "Name and location of Backup folder on server with ip-->(${server_ip}) is '\033[1m\${server_dir}'\033[0m'\n"
+				echo -e "Now for configuring client...\n\n"
+				
+				read -p "Name the backup folder here on the Client: " client_dir
+				
+				mkdir ${HOME}/Desktop/${client_dir} &>> /dev/null
+				sudo mount  ${server_ip}:/home/${user_name}/Desktop/${server_dir}  ${HOME}/Desktop/${client_dir} &>> /dev/null #Mounting directories
+				
+				
+				if [ -d ${HOME}/Desktop/${client_dir} -a $? -eq 0 ]
+				then 
+					
+					echo "Setup on both client and server SUCCESSFULL" 
+				else 
+					echo "Setup configuration on client side FAILED"
+					
+				fi		
+			
+			fi
+			
+		else
+			echo "Connection Failed"
+		fi
+
+
+#Remove after examining-----------------------------------------------------------------------------------------------------------------------------
+<< comment
             if [ $? -eq 0 ]
             then
                 echo -e "\nSSH connection successful\n"
@@ -73,6 +104,7 @@ new_setup()
         else
             echo "Connection Failed"
         fi
+comment
 
     elif [ $server_location -eq 2 ]
     then
@@ -120,8 +152,8 @@ ansible_setup()
     usr_name = $2
     usr_pass = $3
     connection_type = ssh
-    [ -f /root/.NAS/.ip.txt ]
-    if [ $? -eq 1 ]
+    #[ -f /root/.NAS/.ip.txt ]
+    if [ -f /root/.NAS/.ip.txt ]
     then
 	    mkdir /root/.NAS
 	    echo "[NASserver]" > /root/.NAS/.ip.txt
@@ -132,8 +164,8 @@ ansible_setup()
 
     #configuring ansible.cfg file
 
-    [ -d /etc/ansible/ ]
-    if [ $? -eq 1 ]
+   #[ -d /etc/ansible/ ]
+    if [ -d /etc/ansible/ ]
     then
 	    mkdir /etc/ansible/
 	    echo -e "[defaults]\ninventory = /root/.NAS/.ip.txt\nhost_key_checking = False\ndeprecation_warnings = False\ncommand_warnings = False" > /etc/ansible/ansible.cfg
