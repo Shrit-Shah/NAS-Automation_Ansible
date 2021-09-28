@@ -12,42 +12,73 @@ fi
 
 
 new_setup()
+
 {
     echo -e "\vWhere do you want to setup your storage server? \n\n\t1) Another system on the same LAN. \n\t2) In a cloud virtual machine."
     read -p "--> " server_location
 
     if [ $server_location -eq 1 ]
     then
+        echo -e "\nInstalling ansible for server side configuration"
+        load_animation &                  #........................................................ adding loading animation to above echo line
+        pid=$!
         ansible_install
-        client_ip=$(hostname -I | awk {'print $1}') # Client Private IP-address
-        read -p "Enter private ip-address of the server system: " server_ip
+        kill $pid
+        echo ""
+
+
+        client_ip=$(hostname -I | awk {'print $1}')         #..................................... reading Client Private IP-address from client machine
+        read -p "Enter private ip-address of the server system: " server_ip     #................. taking server private IP address from user
         
         # IP validation - REGEX: ((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}
 
-        echo -e "\nEstablishing connection to $server_ip ... \n"
+        echo -e "\nEstablishing connection to $server_ip "
+        load_animation &                   #...................................................... adding loading animation to above echo line
+        pid=$!
+        ping -c 5 $server_ip &>> /dev/null
+        ping_process=$?                    #...................................................... Storing return code of above command in ping_process variable
+        kill $pid
+        echo ""
 
-        ping -c 3 $server_ip &>> /dev/null
-        if [ $? -eq 0 ]
+
+        if [ $ping_process -eq 0 ]
         then 
             echo -e "Connection Successful\n"
 
             read -p "Enter Server username: " user_name
-            read -p "Enter ${usr_name}'s password" user_pass
+            echo -e "\n\033[3mPassword you type will not be visible on screen but will be recorded\033[0m\n"
+            read  -s -p "Enter ${user_name}'s password: " user_pass
+            echo -e "\n"
 
+            
+            echo -e "\nConfiguring ansible and setting up neccessary config files"
+            load_animation &               #...................................................... adding loading animation to above echo line
+            pid=$!
             ansible_setup ${server_ip} ${user_name} ${user_pass}
+            kill $pid
+            echo ""
+
 
             #scp server.sh  ${usr_name}@${server_ip}:/tmp/ &>> /dev/null
-
+            echo -e "\n"
             read -p "Name the backup folder on the Server: " server_dir
 
-            ansible-playbook nas-playbook.yml -e "client_ip=${client_ip} server_user_name=${user_name} server_bak_dir=${server_dir}" &>> /dev/null
-            echo -e "\n Name and location of Backup folder on server with ip-->(${server_ip}) is '\033[1m\NASbackup'\033[0m'\n"
 
-            if [ $? -eq 0 ]
+            echo -e "\nConfiguring NAS server. Running ansible playbook"
+            load_animation &               #...................................................... adding loading animation to above echo line
+            pid=$!
+            ansible-playbook nas-playbook.yml -e "client_ip=${client_ip} server_user_name=${user_name} server_bak_dir=${server_dir}" &>> /dev/null
+            play_process=$?                #...................................................... Storing return code of above command in play_process variable
+            kill $pid
+            echo ""
+
+
+
+            if [ $play_process -eq 0 ]
 			then
 			
 				echo -e "\n Server configuration successfull. \033[1m(${server_ip})\033[0m node is now configured as \033[4mNAS Backup Server\033[0m\n"
-				echo -e "Name and location of Backup folder on server with ip-->(${server_ip}) is '\033[1m\${server_dir}'\033[0m'\n"
+				echo -e "Name and location of Backup folder on server with ip-->(${server_ip}) is '\033[1m/home/${user_name}/Desktop/${server_dir}/\033[0m'\n"
 				echo -e "Now for configuring client...\n\n"
 				
 				read -p "Name the backup folder here on the Client: " client_dir
@@ -59,7 +90,8 @@ new_setup()
 				if [ -d ${HOME}/Desktop/${client_dir} -a $? -eq 0 ]
 				then 
 					
-					echo "Setup on both client and server SUCCESSFULL" 
+					echo "Setup on both client and server \033[1mSUCCESSFULL\033[0m\n\n"
+                    echo -e "Name and location of Backup folder on your client machine having ip-->(${client_ip}) and Username-->${USER} is '\033[1m${HOME}/Desktop/${client_dir}\033[0m'\n" 
 				else 
 					echo "Setup configuration on client side FAILED"
 					
@@ -115,19 +147,25 @@ comment
     else
         echo -e "\vInvalid Input"
     fi
-
-
 }
+
+
+
 
 modify_setup()
 {
     echo "Coming Soon!!"
 }
 
+
+
 uninstall()
 {
     echo "Coming Soon!!"
 }
+
+
+
 
 ansible_install()
 {
@@ -144,6 +182,9 @@ ansible_install()
         fi
     fi
 }
+
+
+
 
 ansible_setup()
 {
@@ -172,6 +213,40 @@ ansible_setup()
 	    echo -e "[defaults]\ninventory = /root/.NAS/.ip.txt\nhost_key_checking = False\ndeprecation_warnings = False\ncommand_warnings = False" > /etc/ansible/ansible.cfg
     fi
 }
+
+
+
+<< spin1_com
+spin_animation1()
+{
+    local pid=$! 
+    spin='-\|/'
+
+    i=0
+    
+    while kill -0 $pid 2>/dev/null
+    do
+        i=$((( i + 1 ) % 4 ))
+        printf "%c\b" "\r${spin:$i:1}"
+        sleep 0.1
+    done
+    printf " "
+}
+spin1_com
+
+
+
+load_animation()
+{
+    while [ 1 ]
+        do
+            echo -ne "."
+            sleep 0.5
+        done
+}
+
+
+
 
 while [ 0 ]
 do
