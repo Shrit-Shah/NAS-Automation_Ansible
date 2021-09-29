@@ -1,9 +1,6 @@
 - hosts: all
-  #vars_files:
-  #- nas_var.yml
-
   vars:
-  - dvd_dir: "/dvd1"
+  - distro_name: "{{ ansible_facts['distribution'] }}"
 
   handlers:
   - name: Restart nfs-utils
@@ -13,43 +10,43 @@
         enabled: yes
 
   tasks:
-  - file:
-       state: directory
-       path: "{{ dvd_dir }}"
-
-  - mount:
-       src: "/dev/sr0"
-       path: "{{ dvd_dir }}"
-       state: mounted
-       fstype: "iso9660"
-  
-  - yum_repository:
-       baseurl: "{{ dvd_dir }}/AppStream"
-       name: "yumconfig1"
-       description: "my yum config for packages"
-       gpgcheck: no
-
-  - yum_repository:
-       baseurl: "{{ dvd_dir }}/BaseOS"
-       name: "yumconfig2"
-       description: "my yum config for packages"
-       gpgcheck: no
-
-  - package:
+  - name: Install package nfs-utils if distro == RedHat (package module)
+    package:
        name: "nfs-utils"
        state: present
+    when: distro_name == "RedHat" 
+
+  - name: Install package nfs-utils if distro == Debian (package module)
+    package:
+       name: "nfs-utils"
+       state: present
+    when: distro_name == "Debian" 
        
-  - file:
+
+  - name: Creating Server backup folder (file module)
+    file:
        state: "directory"
        path: "/home/{{ server_user_name }}/Desktop/{{ server_bak_dir }}"
+
+
+  - name: Starting and enabling Service (service module)     
+    service:
+       name: "nfs-utils"
+       state: "started"
+       enabled: yes
    
-  - template:
+
+  - name: creating exports file and sending to server (template module)     
+    template:
        dest: "/etc/exports"
        src: "/root/ws2/project2/exports"
     notify:
     - Restart nfs-utils
 
-  - firewalld:
+
+  - name: Disabling firewall permanantly (firewalld module)  
+    firewalld:
+       service: "nfs-utils"
        permanent: yes
        immediate: yes
        state: disabled
