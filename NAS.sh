@@ -19,58 +19,86 @@ new_setup()
 
     if [ $server_location -eq 1 ]
     then
-        echo -e "\nInstalling ansible for server side configuration"
-        load_animation &                  #........................................................ adding loading animation to above echo line
+
+        ############################ Inastalling ansible and calling spin2 function #############################
+
+        #echo -e "\nInstalling ansible for server side configuration"
+        spin2 "Installing ansible for server side configuration  " &
         pid=$!
         ansible_install
-        kill $pid
+        kill $pid 2>&1 >> /dev/null
+        echo -e "\nDone"
         echo ""
 
+        ##########################################################################################################
 
-        client_ip=$(hostname -I | awk {'print $1}')         #..................................... reading Client Private IP-address from client machine
-        read -p "Enter private ip-address of the server system: " server_ip     #................. taking server private IP address from user
+
+        # reading Client Private IP-address from client machine and taking server private IP address from user
+
+        client_ip=$(hostname -I | awk {'print $1}')
+        read -p "Enter private ip-address of the server system: " server_ip
+
         
         # IP validation - REGEX: ((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}
 
-        echo -e "\nEstablishing connection to $server_ip "
-        load_animation &                   #...................................................... adding loading animation to above echo line
+
+        ################ Running ping command to check connectivity between server and client ######################
+
+        #echo -e "\nEstablishing connection to $server_ip "
+        spin2 "Establishing Connection to $server_ip  "  &    #adding loading animation to above echo line
         pid=$!
         ping -c 5 $server_ip &>> /dev/null
-        ping_process=$?                    #...................................................... Storing return code of above command in ping_process variable
-        kill $pid
+        ping_process=$?   #Storing return code of above command in ping_process variable
+        kill $pid 2>&1 >> /dev/null
+        echo -e "\nDone"
         echo ""
+
+        ############################################################################################################
 
 
         if [ $ping_process -eq 0 ]
         then 
             echo -e "Connection Successful\n"
 
-            read -p "Enter Server username: " user_name
+            # Asking user for server's user name
+            read -p "Enter Server username: " user_name   
             echo -e "\n\033[3mPassword you type will not be visible on screen but will be recorded\033[0m\n"
+            # Asking user for server's password
             read  -s -p "Enter ${user_name}'s password: " user_pass
             echo -e "\n"
 
             
-            echo -e "\nConfiguring ansible and setting up neccessary config files"
-            load_animation &               #...................................................... adding loading animation to above echo line
+            ########################## Configuration of ansible on client machine ###################################
+
+            #echo -e "\nConfiguring ansible and setting up neccessary config files"
+            spin2 "Configuring ansible and setting up neccessary config files  "  &
             pid=$!
             ansible_setup ${server_ip} ${user_name} ${user_pass}
-            kill $pid
+            kill $pid 2>&1 >> /dev/null
+            echo -e "\nDone"
             echo ""
+
+            #########################################################################################################
+
 
 
             #scp server.sh  ${usr_name}@${server_ip}:/tmp/ &>> /dev/null
             echo -e "\n"
-            read -p "Name the backup folder on the Server: " server_dir
+            read -p "Name the backup folder on the Server: " server_dir  # Asking user to type in server side backup folder's name
 
 
-            echo -e "\nConfiguring NAS server. Running ansible playbook"
-            load_animation &               #...................................................... adding loading animation to above echo line
+            ########################## Configuring NAS server in server machine by executing ansible playbook ##########################
+
+            #echo -e "\nConfiguring NAS server. Running ansible playbook"
+            spin2  "Configuring NAS server. Running ansible playbook  "  &
             pid=$!
             ansible-playbook nas-playbook.yml -e "client_ip=${client_ip} server_user_name=${user_name} server_bak_dir=${server_dir}" &>> /dev/null
-            play_process=$?                #...................................................... Storing return code of above command in play_process variable
-            kill $pid
+            play_process=$?
+            kill $pid 2>&1 >> /dev/null
+            echo -e "\nDone"
             echo ""
+
+            #############################################################################################################################
 
 
 
@@ -81,7 +109,7 @@ new_setup()
 				echo -e "Name and location of Backup folder on server with ip-->(${server_ip}) is '\033[1m/home/${user_name}/Desktop/${server_dir}/\033[0m'\n"
 				echo -e "Now for configuring client...\n\n"
 				
-				read -p "Name the backup folder here on the Client: " client_dir
+				read -p "Name the backup folder here on the Client: " client_dir  # Asking user to type in client side backup folder's name that will be mounted on server
 				
 				mkdir ${HOME}/Desktop/${client_dir} &>> /dev/null
 				sudo mount  ${server_ip}:/home/${user_name}/Desktop/${server_dir}  ${HOME}/Desktop/${client_dir} &>> /dev/null #Mounting directories
@@ -216,35 +244,36 @@ ansible_setup()
 
 
 
-<< spin1_com
-spin_animation1()
+spin2() #spin function for rotating the array of \ | -- /
 {
-    local pid=$! 
-    spin='-\|/'
-
-    i=0
-    
-    while kill -0 $pid 2>/dev/null
-    do
-        i=$((( i + 1 ) % 4 ))
-        printf "%c\b" "\r${spin:$i:1}"
-        sleep 0.1
-    done
-    printf " "
+        spinner=( '|' '/' "--" '\' )
+        var="$1"
+        echo -e "\n"
+        tput civis
+        while [ 1 ]
+        do
+                for i in ${spinner[@]};
+                do
+                        echo -ne "\r$var $i ";
+                        sleep 0.1;
+                done;
+        done
+        tput cnorm 
 }
-spin1_com
 
 
-
+<< load
 load_animation()
 {
+    tput civis
     while [ 1 ]
         do
             echo -ne "."
             sleep 0.5
         done
+    tput cnorm
 }
-
+load
 
 
 
