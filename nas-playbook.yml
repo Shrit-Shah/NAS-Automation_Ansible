@@ -1,6 +1,9 @@
 - hosts: all
-  vars_files:
-  - nas_var.yml
+  #vars_files:
+  #- nas_var.yml
+
+  vars:
+  - dvd_dir: "/dvd1"
 
   handlers:
   - name: Restart nfs-utils
