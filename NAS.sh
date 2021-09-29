@@ -27,6 +27,7 @@ new_setup()
         pid=$!
         ansible_install
         kill $pid 2>&1 >> /dev/null
+        tput cnorm
         echo -e "\nDone"
         echo ""
 
@@ -50,6 +51,7 @@ new_setup()
         ping -c 5 $server_ip &>> /dev/null
         ping_process=$?   #Storing return code of above command in ping_process variable
         kill $pid 2>&1 >> /dev/null
+        tput cnorm
         echo -e "\nDone"
         echo ""
 
@@ -75,6 +77,7 @@ new_setup()
             pid=$!
             ansible_setup ${server_ip} ${user_name} ${user_pass}
             kill $pid 2>&1 >> /dev/null
+            tput cnorm
             echo -e "\nDone"
             echo ""
 
@@ -95,6 +98,7 @@ new_setup()
             ansible-playbook nas-playbook.yml -e "client_ip=${client_ip} server_user_name=${user_name} server_bak_dir=${server_dir}" &>> /dev/null
             play_process=$?
             kill $pid 2>&1 >> /dev/null
+            tput cnorm
             echo -e "\nDone"
             echo ""
 
@@ -257,8 +261,7 @@ spin2() #spin function for rotating the array of \ | -- /
                         echo -ne "\r$var $i ";
                         sleep 0.1;
                 done;
-        done
-        tput cnorm 
+        done 
 }
 
 
