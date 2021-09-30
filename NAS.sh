@@ -26,7 +26,8 @@ new_setup()
         spin2 "Installing ansible for server side configuration  " &
         pid=$!
         ansible_install
-        kill $pid 2>&1 >> /dev/null
+        kill $pid >> /dev/null
+        echo -e "\n"
         tput cnorm
         echo -e "\nDone"
         echo ""
@@ -210,8 +211,10 @@ ansible_install()
 	    pip3 show ansible >> /dev/null
 	    if [ $? -eq 0 ]
 	    then
-		    echo "\n\tAnsible is installed in your system for server side configuration\n"
-        fi
+		    echo -e "\n\tAnsible is installed in your system for server side configuration\n"
+        else 
+            echo -e "\n\tAnsible already installed\n"
+
     fi
 }
 
