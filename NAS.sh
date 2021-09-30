@@ -220,17 +220,23 @@ ansible_install()
 {
     #installing ansible on client machine
 
+    ansible_version="ansible 2.10.14"
     pip3 show ansible >> /dev/null
+
     if [ $? -eq 1 ]
     then
-	    sudo pip3 install --no-cache-dir --disable-pip-version-check -q ansible >> /dev/null
+	    sudo pip3 install --no-cache-dir --disable-pip-version-check -q 'ansible==2.10.2'
 	    pip3 show ansible >> /dev/null
 	    if [ $? -eq 0 ]
 	    then
-		    echo -e "\n\n\033[1mSuccessefully installed ansible-4.6.0\033[0m"
+		    echo -e "\n\n\033[1mSuccessefully installed ansible-2.10.2 ansible-base-2.10.14\033[0m"
         fi
-    else
-        echo -e "\n\n\033[1mSuccessefully installed ansible-4.6.0\033[0m"
+
+    elif [[ `ansible --version | sed -n 1p` =~ $ansible_version ]]
+    then
+
+        echo -e "\n\n\033[1mAnsible pre-installed ansible-2.10.2 ansible-base-2.10.14\033[0m"
+    
     fi
 }
 
