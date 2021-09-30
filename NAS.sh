@@ -230,13 +230,13 @@ ansible_setup()
     usr_pass="$3"
     connection_type="ssh"
     #[ -f /root/.NAS/.ip.txt ]
-    if [ ! -f /root/.NAS/.ip.txt ]
+    if [ ! -f /.NAS/.ip.txt ]
     then
 	    sudo mkdir /root/.NAS
-	    echo "[NASserver]" > /root/.NAS/.ip.txt
+	    echo "[NASserver]" > /.NAS/.ip.txt
 
     else
-	    echo "${server_ip} ansible_user=${usr_name} ansible_password=${usr_pass} ansible_connection=${connection_type}" >> /root/.NAS/.ip.txt
+	    echo "${server_ip} ansible_user=${usr_name} ansible_password=${usr_pass} ansible_connection=${connection_type}" >> /.NAS/.ip.txt
     fi
 
     #configuring ansible.cfg file
@@ -245,7 +245,7 @@ ansible_setup()
     if [ -d /etc/ansible/ ]
     then
 	    mkdir /etc/ansible/
-	    echo -e "[defaults]\ninventory = /root/.NAS/.ip.txt\nhost_key_checking = False\ndeprecation_warnings = False\ncommand_warnings = False" > /etc/ansible/ansible.cfg
+	    echo -e "[defaults]\ninventory = /.NAS/.ip.txt\nhost_key_checking = False\ndeprecation_warnings = False\ncommand_warnings = False" > /etc/ansible/ansible.cfg
     fi
 }
 
