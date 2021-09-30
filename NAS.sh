@@ -23,7 +23,7 @@ new_setup()
         ############################ Inastalling ansible and calling spin2 function #############################
 
         #echo -e "\nInstalling ansible for server side configuration"
-        spin2 "Installing ansible for server side configuration  " &
+        spin2 "Installing ansible-4.6.0  " &
         pid=$!
         ansible_install
         echo -e "\n"
@@ -207,7 +207,7 @@ ansible_install()
     pip3 show ansible >> /dev/null
     if [ $? -eq 1 ]
     then
-	    pip3 install ansible >> /dev/null
+	    sudo pip3 install --no-cache-dir --disable-pip-version-check -q ansible >> /dev/null
 	    pip3 show ansible >> /dev/null
 	    if [ $? -eq 0 ]
 	    then
