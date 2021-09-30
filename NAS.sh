@@ -26,6 +26,7 @@ new_setup()
         spin2 "Installing ansible for server side configuration  " &
         pid=$!
         ansible_install
+        echo -e "\n"
         kill $pid >> /dev/null
         #echo -e "\n"
         tput cnorm
@@ -264,8 +265,9 @@ spin2() #spin function for rotating the array of \ | -- /
                         echo -ne "\r$var $i ";
                         sleep 0.1;
                 done;
-                echo -e "\n"
-        done 
+                #echo -e "\n"
+        done
+
 }
 
 
