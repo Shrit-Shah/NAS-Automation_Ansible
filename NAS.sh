@@ -232,7 +232,7 @@ ansible_setup()
     #[ -f /root/.NAS/.ip.txt ]
     if [ ! -f /.NAS/.ip.txt ]
     then
-	    sudo mkdir /root/.NAS
+	    sudo mkdir /.NAS
 	    echo "[NASserver]" > /.NAS/.ip.txt
 
     else
