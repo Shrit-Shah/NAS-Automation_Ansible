@@ -17,7 +17,7 @@ new_setup()
     echo -e "\vWhere do you want to setup your storage server? \n\n\t1) Another system on the same LAN. \n\t2) In a cloud virtual machine."
     read -p "--> " server_location
 
-    if [ $server_location -eq 1 ]
+    if [ $server_location -eq "1" ]
     then
 
         ############################ Inastalling ansible and calling spin2 function #############################
@@ -172,7 +172,7 @@ new_setup()
 comment
 #Remove after examining-----------------------------------------------------------------------------------------------------------------------------
 
-    elif [ $server_location -eq 2 ]
+    elif [ $server_location -eq "2" ]
     then
         echo "Coming Soon!!"
         #$client_ip=$(dig +short myip.opendns.com @resolver1.opendns.com) # Client Public IP-address
