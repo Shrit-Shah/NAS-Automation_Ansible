@@ -133,7 +133,9 @@ new_setup()
                     else 
                         echo "Setup configuration on client side FAILED"
                         
-                    fi		
+                    fi
+                else
+                    echo "Server Configuration failed, playbook didn't executed"	
                 
                 fi
                 
@@ -249,7 +251,7 @@ ansible_setup()
 	    sudo mkdir /.NAS
 	    echo "[NASserver]" > /.NAS/.ip.txt
     fi
-    echo "${server_ip} ansible_user=${usr_name} ansible_password=${usr_pass} ansible_connection=${connection_type}" >> /.NAS/.ip.txt
+    echo "${server_ip} ansible_user=${usr_name} ansible_password=${usr_pass} ansible_connection=${connection_type}" > /.NAS/.ip.txt
 
     #configuring ansible.cfg file
 
