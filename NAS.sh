@@ -228,9 +228,9 @@ ansible_setup()
     server_ip="$1"
     usr_name="$2"
     usr_pass="$3"
-    connection_type = "ssh"
+    connection_type="ssh"
     #[ -f /root/.NAS/.ip.txt ]
-    if [ -f /root/.NAS/.ip.txt ]
+    if [ ! -f /root/.NAS/.ip.txt ]
     then
 	    sudo mkdir /root/.NAS
 	    echo "[NASserver]" > /root/.NAS/.ip.txt
