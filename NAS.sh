@@ -206,8 +206,8 @@ ansible_install()
     pip3 show ansible >> /dev/null
     if [ $? -eq 1 ]
     then
-	    pip3 install ansible >> /dev/null
-	    pip3 show ansible >> /dev/null
+	    sudo pip3 install ansible >> /dev/null
+	    sudo pip3 show ansible >> /dev/null
 	    if [ $? -eq 0 ]
 	    then
 		    echo "\n\tAnsible is installed in your system for server side configuration\n"
