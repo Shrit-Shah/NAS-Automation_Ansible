@@ -206,7 +206,7 @@ ansible_install()
     pip3 show ansible >> /dev/null
     if [ $? -eq 1 ]
     then
-	    pip3 install ansible >> /dev/null
+	    pip3 install ansible -y >> /dev/null
 	    pip3 show ansible >> /dev/null
 	    if [ $? -eq 0 ]
 	    then
