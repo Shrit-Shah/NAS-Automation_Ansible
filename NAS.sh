@@ -17,7 +17,7 @@ new_setup()
     echo -e "\vWhere do you want to setup your storage server? \n\n\t1) Another system on the same LAN. \n\t2) In a cloud virtual machine."
     read -p "--> " server_location
 
-    #if [ $server_location -eq "1" ]   # ERROR: If none selected than error of "unary operator expected" comes at line 20 and 175
+    #if [ $server_location -eq "1" ]    ERROR: If none selected than error of "unary operator expected" comes at line 20 and 175
     #then
 
     case $server_location in 
@@ -180,7 +180,7 @@ comment
 
     #elif [ $server_location -eq "2" ]
     #then
-    
+
         2)
             echo "Coming Soon!!"
             #$client_ip=$(dig +short myip.opendns.com @resolver1.opendns.com) # Client Public IP-address
@@ -189,6 +189,8 @@ comment
         *)
             echo -e "\vSelect valid option from the menu"
             ;;
+
+    esac
 }
 
 
