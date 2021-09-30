@@ -142,7 +142,7 @@ new_setup()
             fi
 
 
-    #Remove after examining-----------------------------------------------------------------------------------------------------------------------------
+#Remove after examining-----------------------------------------------------------------------------------------------------------------------------
 << comment
                 if [ $? -eq 0 ]
                 then
@@ -175,8 +175,10 @@ new_setup()
                 echo "Connection Failed"
             fi
 comment
-            ;;
 #Remove after examining-----------------------------------------------------------------------------------------------------------------------------
+            ;;
+
+
 
     #elif [ $server_location -eq "2" ]
     #then
@@ -185,6 +187,7 @@ comment
             echo "Coming Soon!!"
             #$client_ip=$(dig +short myip.opendns.com @resolver1.opendns.com) # Client Public IP-address
             ;;
+        
         
         *)
             echo -e "\vSelect valid option from the menu"
