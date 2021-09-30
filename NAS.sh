@@ -211,10 +211,10 @@ ansible_install()
 	    pip3 show ansible >> /dev/null
 	    if [ $? -eq 0 ]
 	    then
-		    echo -e "\n\n\033[1mInstallation Complete\033[0m"
+		    echo -e "\n\n\033[1mSuccessefully installed ansible-4.6.0\033[0m"
         fi
     else
-        echo -e "\n\n\033[1mAnsible already installed\033[0m"
+        echo -e "\n\n\033[1mSuccessefully installed ansible-4.6.0\033[0m"
     fi
 }
 
