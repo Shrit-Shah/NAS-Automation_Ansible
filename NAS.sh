@@ -267,6 +267,10 @@ ansible_setup()
 	    sudo mkdir /etc/ansible/
 	    echo -e "[defaults]\ninventory = /.NAS/.ip.txt\nhost_key_checking = False\ndeprecation_warnings = False\ncommand_warnings = False" > /etc/ansible/ansible.cfg
     fi
+
+    sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+    sudo dnf upgrade
+    sudo dnf install sshpass -y
     sleep 5
 }
 
