@@ -27,7 +27,7 @@ new_setup()
         pid=$!
         ansible_install
         echo -e "\n"
-        kill $pid >> /dev/null
+        kill $pid 2>&1 >> /dev/null
         #echo -e "\n"
         tput cnorm
         echo -e "\nDone"
@@ -208,11 +208,11 @@ ansible_install()
     pip3 show ansible >> /dev/null
     if [ $? -eq 1 ]
     then
-	    pip3 install ansible >> /dev/null
+	    pip3 install --user ansible >> /dev/null
 	    pip3 show ansible >> /dev/null
 	    if [ $? -eq 0 ]
 	    then
-		    echo -e "\n\nAnsible is installed in your system for server side configuration\n"
+		    echo -e "\n\n\033[1mInstallation Complete\033[0m"
         else 
             echo -e "\n\tAnsible already installed\n"
         fi
@@ -264,8 +264,7 @@ spin2() #spin function for rotating the array of \ | -- /
                 do
                         echo -ne "\r$var $i ";
                         sleep 0.1;
-                done;
-                #echo -e "\n"
+                done
         done
 
 }
