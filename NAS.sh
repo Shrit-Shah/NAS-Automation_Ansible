@@ -214,7 +214,7 @@ ansible_install()
 		    echo -e "\n\tAnsible is installed in your system for server side configuration\n"
         else 
             echo -e "\n\tAnsible already installed\n"
-
+        fi
     fi
 }
 
