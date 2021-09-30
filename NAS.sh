@@ -212,9 +212,9 @@ ansible_install()
 	    if [ $? -eq 0 ]
 	    then
 		    echo -e "\n\n\033[1mInstallation Complete\033[0m"
-        else 
-            echo -e "\n\tAnsible already installed\n"
         fi
+    else
+        echo -e "\n\n\033[1mAnsible already installed\033[0m"
     fi
 }
 
