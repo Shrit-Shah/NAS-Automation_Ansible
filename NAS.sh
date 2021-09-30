@@ -188,7 +188,7 @@ comment
             #$client_ip=$(dig +short myip.opendns.com @resolver1.opendns.com) # Client Public IP-address
             ;;
         
-        
+
         *)
             echo -e "\vSelect valid option from the menu"
             ;;
@@ -254,11 +254,12 @@ ansible_setup()
     #configuring ansible.cfg file
 
    #[ -d /etc/ansible/ ]
-    if [ -d /etc/ansible/ ]
+    if [ ! -d /etc/ansible/ ]
     then
 	    sudo mkdir /etc/ansible/
 	    echo -e "[defaults]\ninventory = /.NAS/.ip.txt\nhost_key_checking = False\ndeprecation_warnings = False\ncommand_warnings = False" > /etc/ansible/ansible.cfg
     fi
+    sleep 5
 }
 
 
