@@ -51,9 +51,9 @@ new_setup()
         pid=$!
         ping -c 5 $server_ip &>> /dev/null
         ping_process=$?   #Storing return code of above command in ping_process variable
+        echo -e "\n"
         kill $pid 2>&1 >> /dev/null
         tput cnorm
-        echo -e "\nDone"
         echo ""
 
         ############################################################################################################
@@ -77,9 +77,9 @@ new_setup()
             spin2 "Configuring ansible and setting up neccessary config files  "  &
             pid=$!
             ansible_setup ${server_ip} ${user_name} ${user_pass}
+            echo -e "\n"
             kill $pid 2>&1 >> /dev/null
             tput cnorm
-            echo -e "\nDone"
             echo ""
 
             #########################################################################################################
@@ -98,9 +98,9 @@ new_setup()
             pid=$!
             ansible-playbook nas-playbook.yml -e "client_ip=${client_ip} server_user_name=${user_name} server_bak_dir=${server_dir}" &>> /dev/null
             play_process=$?
+            echo -e "\n"
             kill $pid 2>&1 >> /dev/null
             tput cnorm
-            echo -e "\nDone"
             echo ""
 
             #############################################################################################################################
@@ -225,10 +225,10 @@ ansible_setup()
 {
     #configuring inventory file for ansible
 
-    server_ip = $1
-    usr_name = $2
-    usr_pass = $3
-    connection_type = ssh
+    server_ip="$1"
+    usr_name="$2"
+    usr_pass="$3"
+    connection_type = "ssh"
     #[ -f /root/.NAS/.ip.txt ]
     if [ -f /root/.NAS/.ip.txt ]
     then
