@@ -112,14 +112,14 @@ new_setup()
                 server_home_dir=$(cat /tmp/temp.txt)
                 echo -e "\nHome directory of ${server_ip} is '${server_home_dir}'"
                 echo -e "${server_home_dir}/Desktop/${server_dir} ${client_ip}(rw,no_root_squash)" > /tmp/exports
-                #spin2  "Configuring NAS server. Running ansible playbook  "  &
-                #pid=$!
+                spin2  "Configuring NAS server. Running ansible playbook  "  &
+                pid=$!
                 ansible-playbook nas-playbook.yml --extra-vars "home=${sever_home_dir} server_bak_dir=${server_dir}" &>> /dev/null
                 play_process=$?
-                #echo -e "\n"
-                #kill $pid 2>&1 >> /dev/null
-                #tput cnorm
-                #echo ""
+                echo -e "\n"
+                kill $pid 2>&1 >> /dev/null
+                tput cnorm
+                echo ""
 
                 #############################################################################################################################
 
