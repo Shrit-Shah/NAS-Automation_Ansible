@@ -82,13 +82,13 @@ new_setup()
                 spin2 "Configuring ansible and setting up neccessary config files  "  &
                 pid=$!
                 ansible_setup ${server_ip} ${user_name} ${user_pass}
-                if [ $? -eq 3]
+                if [ $? -eq 3 ]
                 then
                     echo -e "\n"
                     kill $pid 2>&1 >> /dev/null
                     tput cnorm
                     echo ""
-                elif [ $? -eq 1]
+                elif [ $? -eq 1 ]
                 then
                     kill $pid 2>&1 >> /dev/null
                     exit
@@ -272,22 +272,22 @@ ansible_setup()
     fi
 
     sudo dnf list installed | grep epel-release &>> /dev/null
-    if [ $? -eq 1]
+    if [ $? -eq 1 ]
     then
         sudo ping -c 1 8.8.8.8 &>> /dev/null
-        if [ $? -eq 0]
+        if [ $? -eq 0 ]
         then 
             sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm -y &>> /dev/null
             sudo dnf upgrade &>> /dev/null
             
             sudo dnf list installed | grep sshpass &>> /dev/null
-            if [ $? -eq 1]
+            if [ $? -eq 1 ]
             then
                 sudo ping -c 1 8.8.8.8 &>> /dev/null    
-                if [ $? -eq 0]
+                if [ $? -eq 0 ]
                 then
                     sudo dnf install sshpass -y  &>> /dev/null
-                    if [ $? -eq 0]
+                    if [ $? -eq 0 ] 
                     then
                         sudo dnf clean dbcache &>> /dev/null
                         echo -e "\nSuccessfully installed sshpass.x86_64 package!!!"
@@ -295,32 +295,32 @@ ansible_setup()
                         echo -e "\nUnable to install required packages!!!"
                         return 1
                     fi
-                elif [ $? -eq 2]
+                elif [ $? -eq 2 ]
                 then   
                     echo -e "\nPlease check your internet connectivity!!! and re-run program."
                     return 1
                 fi
-            elif [ $? -eq 0]
+            elif [ $? -eq 0 ]
             then    
                 echo -e "\nsshpass.86_64 package is already installed!!!"
             fi
-        elif [ $? -eq 2]
+        elif [ $? -eq 2 ]
         then
             echo -e "\nPlease check your internet connectivity!!! and re-run program."
             return 1
         fi
 
-    elif [ $? -eq 0]
+    elif [ $? -eq 0 ]
     then
         sudo dnf upgrade &>> /dev/null
         sudo dnf list installed | grep sshpass &>> /dev/null
-        if [ $? -eq 1]
+        if [ $? -eq 1 ]
         then
             sudo ping -c 1 8.8.8.8 &>> /dev/null
-            if [ $? -eq 0]
+            if [ $? -eq 0 ]
             then
                 sudo dnf install sshpass -y &>> /dev/null
-                if [ $? -eq 0]
+                if [ $? -eq 0 ]
                 then 
                     sudo dnf clean dbcache &>> /dev/null
                     echo -e "\nSuccessfully installed sshpass.x86_64 package"
@@ -328,12 +328,12 @@ ansible_setup()
                     echo -e "\nUnable to install required packages"
                     return 1
                 fi
-            elif [ $? -eq 2]
+            elif [ $? -eq 2 ] 
             then
                 echo -e "\nPlease check your internet connectivity and re-run program."
                 return 1
             fi
-        elif [ $? -eq 0]
+        elif [ $? -eq 0 ]
         then
             echo -e "\nsshpass.86_64 package is already installed!!!"
         fi
