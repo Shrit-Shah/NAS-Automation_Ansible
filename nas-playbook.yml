@@ -4,8 +4,7 @@
   - name: Creating exports file in localhost
     copy:
       dest: /tmp/exports
-      content: |
-        {{ nfs_dir }} {{ client_ip }}(rw,no_root_squash)
+      content: "{{ nfs_dir }} {{ client_ip }}(rw,no_root_squash)"
   
   
   
