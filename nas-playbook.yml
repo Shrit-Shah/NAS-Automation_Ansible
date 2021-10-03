@@ -13,25 +13,25 @@
         enabled: yes
 
   tasks:
-  - name: Install package nfs-utils if distro == RedHat (package module)
-    package:
-       name: "nfs-utils"
-       state: present
+  
+  #- name: Install package nfs-utils if distro == RedHat (package module)
+   # package:
+    #   name: "nfs-utils"
+     #  state: present
     #become: yes
     #become_user: root
-    when: distro_name == "RedHat"
-    become: true
+    #when: distro_name == "RedHat"
+    #become: true
 
 
-  - name: Install package nfs-utils if distro == Debian (package module)
-    package:
-       name: "nfs-utils"
-       state: present
+  #- name: Install package nfs-utils if distro == Debian (package module)
+   # package:
+    #   name: "nfs-utils"
+     #  state: present
     #become: yes
     #become_user: root
-    when: distro_name == "Debian"
-    become: true 
-       
+    #when: distro_name == "Debian"
+    #become: true 
 
   - name: Creating Server backup folder (file module)
     file:
