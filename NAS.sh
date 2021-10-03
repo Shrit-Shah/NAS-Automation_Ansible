@@ -108,7 +108,7 @@ new_setup()
                 #echo -e "\nConfiguring NAS server. Running ansible playbook"
                 spin2  "Configuring NAS server. Running ansible playbook  "  &
                 pid=$!
-                sudo ansible-playbook nas-playbook.yml -e "client_ip=${client_ip} server_user_name=${user_name} server_bak_dir=${server_dir}" &>> /dev/null
+                ansible-playbook nas-playbook.yml -e "client_ip=${client_ip} server_user_name=${user_name} server_bak_dir=${server_dir}" &>> /dev/null
                 play_process=$?
                 echo -e "\n"
                 kill $pid 2>&1 >> /dev/null
