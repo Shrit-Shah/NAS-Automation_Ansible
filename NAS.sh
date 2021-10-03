@@ -290,12 +290,12 @@ ansible_setup()
                         echo -e "\nSuccessfully installed sshpass.x86_64 package!!!"
                     else 
                         echo -e "\nUnable to install required packages!!!"
-                        exit
+                        exit 1
                     fi
                 elif [ $? -eq 2]
                 then   
                     echo -e "\nPlease check your internet connectivity!!! and re-run program."
-                    exit
+                    exit 1
                 fi
             elif [ $? -eq 0]
             then    
@@ -323,12 +323,12 @@ ansible_setup()
                     echo -e "\nSuccessfully installed sshpass.x86_64 package"
                 else
                     echo -e "\nUnable to install required packages"
-                    exit
+                    exit 1
                 fi
             elif [ $? -eq 2]
             then
                 echo -e "\nPlease check your internet connectivity and re-run program."
-                exit
+                exit 1
             fi
         elif [ $? -eq 0]
         then
