@@ -268,9 +268,75 @@ ansible_setup()
 	    echo -e "[defaults]\ninventory = /.NAS/.ip.txt\nhost_key_checking = False\ndeprecation_warnings = False\ncommand_warnings = False" > /etc/ansible/ansible.cfg
     fi
 
-    sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
-    sudo dnf upgrade
-    sudo dnf install sshpass -y
+    sudo dnf list installed | grep epel-release &>> /dev/null
+    if [ $? -eq 1]
+    then
+        sudo ping -c 1 8.8.8.8 &>> /dev/null
+        if [ $? -eq 0]
+        then 
+            sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm -y &>> /dev/null
+            sudo dnf upgrade &>> /dev/null
+            
+            sudo dnf list installed | grep sshpass &>> /dev/null
+            if [ $? -eq 1]
+            then
+                sudo ping -c 1 8.8.8.8 &>> /dev/null    
+                if [ $? -eq 0]
+                then
+                    sudo dnf install sshpass -y  &>> /dev/null
+                    if [ $? -eq 0]
+                    then
+                        sudo dnf clean dbcache &>> /dev/null
+                        echo -e "\nSuccessfully installed sshpass.x86_64 package!!!"
+                    else 
+                        echo -e "\nUnable to install required packages!!!"
+                        exit
+                    fi
+                elif [ $? -eq 2]
+                then   
+                    echo -e "\nPlease check your internet connectivity!!! and re-run program."
+                    exit
+                fi
+            elif [ $? -eq 0]
+            then    
+                echo -e "\nsshpass.86_64 package is already installed!!!"
+            fi
+        elif [ $? -eq 2]
+        then
+            echo -e "\nPlease check your internet connectivity!!! and re-run program."
+            exit
+        fi
+
+    elif [ $? -eq 0]
+    then
+        sudo dnf upgrade &>> /dev/null
+        sudo dnf list installed | grep sshpass &>> /dev/null
+        if [ $? -eq 1]
+        then
+            sudo ping -c 1 8.8.8.8 &>> /dev/null
+            if [ $? -eq 0]
+            then
+                sudo dnf install sshpass -y &>> /dev/null
+                if [ $? -eq 0]
+                then 
+                    sudo dnf clean dbcache &>> /dev/null
+                    echo -e "\nSuccessfully installed sshpass.x86_64 package"
+                else
+                    echo -e "\nUnable to install required packages"
+                    exit
+                fi
+            elif [ $? -eq 2]
+            then
+                echo -e "\nPlease check your internet connectivity and re-run program."
+                exit
+            fi
+        elif [ $? -eq 0]
+        then
+            echo -e "\nsshpass.86_64 package is already installed!!!"
+        fi
+        
+    fi
+
     sleep 5
 }
 
