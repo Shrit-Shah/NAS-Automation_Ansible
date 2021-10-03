@@ -107,7 +107,7 @@ new_setup()
 
                 #echo -e "\nConfiguring NAS server. Running ansible playbook"
                 echo -e "\nCollecting server --> ${user_name}'s HOME directory path!!! You have to provide ${user_name}:${server_ip}'s password"
-                server_home_dir=$(sshpass -p "${user_pass}" ssh ${user_name}:${server_ip} echo $HOME)
+                server_home_dir=$(sshpass -p "${user_pass}" ssh ${server_ip} echo $HOME)
                 echo -e "/${server_dir} ${client_ip}(rw,no_root_squash)" > /tmp/exports
                 spin2  "Configuring NAS server. Running ansible playbook  "  &
                 pid=$!
