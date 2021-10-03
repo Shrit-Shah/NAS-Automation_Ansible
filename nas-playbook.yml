@@ -1,6 +1,6 @@
 - hosts: all
   become: yes
-  become_method: sudo 
+  become_user: root
 
   vars:
   - distro_name: "{{ ansible_facts['distribution'] }}"
