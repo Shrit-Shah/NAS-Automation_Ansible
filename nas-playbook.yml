@@ -4,7 +4,7 @@
   - name: Creating exports file in localhost
     copy:
       dest: /tmp/exports
-      content: "{{ $HOME }}/Desktop/{{ server_dir }} {{ client_ip }}(rw,no_root_squash)"
+      content: "{{ $HOME }}/Desktop/{{ server_bak_dir }} {{ client_ip }}(rw,no_root_squash)"
   
   
   
