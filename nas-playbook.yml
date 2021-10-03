@@ -1,3 +1,14 @@
+- hosts: localhost
+  
+  tasks:
+  - name: Creating exports file in localhost
+    copy:
+      dest: /tmp/exports
+      content: |
+        {{ nfs_dir }} {{ client_ip }}(rw,no_root_squash)
+  
+  
+  
 - hosts: all
   vars:
   - distro_name: "{{ ansible_facts['distribution'] }}"
@@ -39,7 +50,7 @@
   - name: creating exports file and sending to server (template module)     
     template:
        dest: "/etc/exports"
-       src: "/root/ws2/project2/exports"
+       src: "/etc/exports"
     notify:
     - Restart nfs-utils
 
