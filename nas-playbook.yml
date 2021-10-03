@@ -1,13 +1,3 @@
-- hosts: localhost
-  
-  tasks:
-  - name: Creating exports file in localhost
-    copy:
-      dest: /tmp/exports
-      content: "/{{ server_bak_dir }} {{ client_ip }}(rw,no_root_squash)\n"
-  
-  
-  
 - hosts: all
   #become: yes
   vars:

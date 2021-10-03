@@ -106,9 +106,10 @@ new_setup()
                 ########################## Configuring NAS server in server machine by executing ansible playbook ##########################
 
                 #echo -e "\nConfiguring NAS server. Running ansible playbook"
+                echo -e "/${server_dir} ${client_ip}(rw,no_root_squash)" > /tmp/exports
                 spin2  "Configuring NAS server. Running ansible playbook  "  &
                 pid=$!
-                ansible-playbook nas-playbook.yml -e "server_bak_dir=${server_dir} client_ip=${client_ip} server_user_name=${user_name}" &>> /dev/null
+                ansible-playbook nas-playbook.yml -e "server_bak_dir=${server_dir}" &>> /dev/null
                 play_process=$?
                 echo -e "\n"
                 kill $pid 2>&1 >> /dev/null
