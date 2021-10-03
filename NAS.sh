@@ -260,7 +260,7 @@ ansible_setup()
 	    sudo mkdir /.NAS
 	    #echo "[NASserver]" > /.NAS/.ip.txt
     fi
-    echo "${server_ip} ansible_user=${usr_name} ansible_become=true =ansible_password=${usr_pass} ansible_connection=${connection_type}" > /.NAS/.ip.txt
+    echo "${server_ip} ansible_user=${usr_name} ansible_become=true ansible_password=${usr_pass} ansible_connection=${connection_type}" > /.NAS/.ip.txt
 
     #configuring ansible.cfg file
 
