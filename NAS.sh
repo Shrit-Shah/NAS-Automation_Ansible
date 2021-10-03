@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 clear
 which figlet &>> /dev/null
