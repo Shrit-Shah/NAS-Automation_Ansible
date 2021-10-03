@@ -129,14 +129,14 @@ new_setup()
                     read -p "Name the backup folder here on the Client: " client_dir  # Asking user to type in client side backup folder's name that will be mounted on server
                     
                     mkdir ${HOME}/Desktop/${client_dir} &>> /dev/null
-                    sudo mount  ${server_ip}:/home/${user_name}/Desktop/${server_dir}  ${HOME}/Desktop/${client_dir} &>> /dev/null #Mounting directories
+                    sudo mount  ${server_ip}:{$HOME}/Desktop/${server_dir}  ${HOME}/Desktop/${client_dir} &>> /dev/null #Mounting directories
                     
                     
                     if [ -d ${HOME}/Desktop/${client_dir} -a $? -eq 0 ]
                     then 
                         
                         echo "Setup on both client and server \033[1mSUCCESSFULL\033[0m\n\n"
-                        echo -e "Name and location of Backup folder on your client machine having ip-->(${client_ip}) and Username-->${USER} is '\033[1m${HOME}/Desktop/${client_dir}\033[0m'\n" 
+                        echo -e "Name and location of Backup folder on your client machine having ip-->(${client_ip}) and Username-->${user_name} is '\033[1m${HOME}/Desktop/${client_dir}\033[0m'\n" 
                     else 
                         echo "Setup configuration on client side FAILED"
                         
