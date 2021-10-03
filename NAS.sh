@@ -235,9 +235,9 @@ ansible_install()
 		    echo -e "\n\n\033[1mSuccessefully installed ansible-2.10.2 ansible-base-2.10.14\033[0m"
         fi
 
-    elif [[ `ansible --version | sed -n 1p` =~ $ansible_version ]]
-    then
-
+    #elif [[ `ansible --version | sed -n 1p` =~ $ansible_version ]]
+    #then
+    else
         echo -e "\n\n\033[1mAnsible pre-installed ansible-2.10.2 ansible-base-2.10.14\033[0m"
     
     fi
