@@ -9,6 +9,7 @@
   
   
 - hosts: all
+  become: yes
   vars:
   - distro_name: "{{ ansible_facts['distribution'] }}"
 
@@ -24,7 +25,7 @@
     package:
        name: "nfs-utils"
        state: present
-    become: true
+    become: yes
     #become_user: root
     when: distro_name == "RedHat"
 
@@ -33,7 +34,7 @@
     package:
        name: "nfs-utils"
        state: present
-    become: true
+    #become: yes
     #become_user: root
     when: distro_name == "Debian" 
        
