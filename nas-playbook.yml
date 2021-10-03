@@ -50,7 +50,7 @@
   - name: creating exports file and sending to server (template module)     
     template:
        dest: "/etc/exports"
-       src: "/etc/exports"
+       src: "/tmp/exports"
     notify:
     - Restart nfs-utils
 
