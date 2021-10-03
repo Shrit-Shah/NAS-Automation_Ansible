@@ -47,6 +47,7 @@
        name: "nfs-utils"
        state: "started"
        enabled: yes
+    become: true
    
 
   - name: creating exports file and sending to server (template module)     
