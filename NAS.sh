@@ -334,10 +334,12 @@ ansible_setup()
         then
             echo -e "\nsshpass.86_64 package is already installed!!!"
         fi
-        
+
     fi
 
     sleep 5
+
+    exit 3
 }
 
 
