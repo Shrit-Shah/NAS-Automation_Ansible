@@ -82,10 +82,16 @@ new_setup()
                 spin2 "Configuring ansible and setting up neccessary config files  "  &
                 pid=$!
                 ansible_setup ${server_ip} ${user_name} ${user_pass}
-                echo -e "\n"
-                kill $pid 2>&1 >> /dev/null
-                tput cnorm
-                echo ""
+                if [ $? -eq 3]
+                then
+                    echo -e "\n"
+                    kill $pid 2>&1 >> /dev/null
+                    tput cnorm
+                    echo ""
+                elif [ $? -eq 1]
+                then
+                    kill $pid 2>&1 >> /dev/null
+                    exit
 
                 #########################################################################################################
 
@@ -290,12 +296,12 @@ ansible_setup()
                         echo -e "\nSuccessfully installed sshpass.x86_64 package!!!"
                     else 
                         echo -e "\nUnable to install required packages!!!"
-                        exit 1
+                        return 1
                     fi
                 elif [ $? -eq 2]
                 then   
                     echo -e "\nPlease check your internet connectivity!!! and re-run program."
-                    exit 1
+                    return 1
                 fi
             elif [ $? -eq 0]
             then    
@@ -304,7 +310,7 @@ ansible_setup()
         elif [ $? -eq 2]
         then
             echo -e "\nPlease check your internet connectivity!!! and re-run program."
-            exit
+            return 1
         fi
 
     elif [ $? -eq 0]
@@ -323,12 +329,12 @@ ansible_setup()
                     echo -e "\nSuccessfully installed sshpass.x86_64 package"
                 else
                     echo -e "\nUnable to install required packages"
-                    exit 1
+                    return 1
                 fi
             elif [ $? -eq 2]
             then
                 echo -e "\nPlease check your internet connectivity and re-run program."
-                exit 1
+                return 1
             fi
         elif [ $? -eq 0]
         then
@@ -338,8 +344,7 @@ ansible_setup()
     fi
 
     sleep 5
-
-    exit 3
+    return 3
 }
 
 
