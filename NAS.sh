@@ -107,7 +107,7 @@ new_setup()
 
                 #echo -e "\nConfiguring NAS server. Running ansible playbook"
                 echo -e "\nCollecting server --> ${user_name}'s HOME directory path!!!"
-                ssh ${user_name}@${server_ip} whoami >> /tmp/temp.txt
+                ssh ${user_name}@${server_ip} whoami > /tmp/temp.txt
                 #server_home_dir=$(ssh ${user_name}@${server_ip} echo $HOME)
                 server_home_dir=$(cat /tmp/temp.txt)
                 echo -e "\nHome directory of ${server_ip} is '/${server_home_dir}'"
