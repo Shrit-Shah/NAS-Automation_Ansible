@@ -73,7 +73,7 @@ new_setup()
                 echo -e "\n\033[3mPassword you type will not be visible on screen but will be recorded\033[0m\n"
                 # Asking user for server's password
                 read  -s -p "Enter ${user_name}'s password: " user_pass
-                echo -e "\n"
+                #echo -e "\n"
 
                 
                 ########################## Configuration of ansible on client machine ###################################
@@ -99,7 +99,7 @@ new_setup()
 
 
                 #scp server.sh  ${usr_name}@${server_ip}:/tmp/ &>> /dev/null
-                echo -e "\n"
+                #echo -e "\n"
                 read -p "Name the backup folder on the Server: " server_dir  # Asking user to type in server side backup folder's name
 
 
