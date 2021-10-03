@@ -1,6 +1,6 @@
 - hosts: all
-  become: yes
-  become_user: root
+  #become: yes
+  #become_user: root
 
   vars:
   - distro_name: "{{ ansible_facts['distribution'] }}"
@@ -20,6 +20,7 @@
     #become: yes
     #become_user: root
     when: distro_name == "RedHat"
+    become: true
 
 
   - name: Install package nfs-utils if distro == Debian (package module)
@@ -28,7 +29,8 @@
        state: present
     #become: yes
     #become_user: root
-    when: distro_name == "Debian" 
+    when: distro_name == "Debian"
+    become: true 
        
 
   - name: Creating Server backup folder (file module)
