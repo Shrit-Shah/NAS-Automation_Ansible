@@ -25,7 +25,7 @@
        name: "nfs-utils"
        state: present
     become: true
-    become_user: root
+    #become_user: root
     when: distro_name == "RedHat"
 
 
@@ -34,7 +34,7 @@
        name: "nfs-utils"
        state: present
     become: true
-    become_user: root
+    #become_user: root
     when: distro_name == "Debian" 
        
 
