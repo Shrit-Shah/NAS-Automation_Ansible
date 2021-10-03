@@ -132,7 +132,7 @@ new_setup()
                     sudo mount  ${server_ip}:/${server_dir}  /${client_dir} &>> /dev/null #Mounting directories
                     
                     
-                    if [ -d ${HOME}/Desktop/${client_dir} -a $? -eq 0 ]
+                    if [ -d /${client_dir} -a $? -eq 0 ]
                     then 
                         
                         echo "Setup on both client and server \033[1mSUCCESSFULL\033[0m\n\n"
