@@ -3,7 +3,9 @@
   #become_user: root
 
   vars:
-  - distro_name: "{{ ansible_facts['distribution'] }}"
+  #- distro_name: "{{ ansible_facts['distribution'] }}"
+  - home_dir: "{{ home }}"
+  - dir_server: "{{ server_bak_dir }}"
 
   handlers:
   - name: Restart nfs-utils
@@ -36,8 +38,8 @@
   - name: Creating Server backup folder (file module)
     file:
        state: "directory"
-       path: "{{ home }}/Desktop/{{ server_bak_dir }}"
-       mode: 0755
+       path: "{{ home_dir }}/Desktop/{{ dir_server }}"
+       #mode: 0755
 
 
   - name: Starting and enabling Service (service module)     
