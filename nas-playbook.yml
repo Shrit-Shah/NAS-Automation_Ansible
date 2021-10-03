@@ -38,7 +38,7 @@
   - name: Creating Server backup folder (file module)
     file:
        state: "directory"
-       path: "{{ home_dir }}/Desktop/{{ dir_server }}"
+       path: "/{{ home_dir }}/Desktop/{{ dir_server }}"
        #mode: 0755
 
 
