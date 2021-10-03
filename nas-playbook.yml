@@ -41,7 +41,7 @@
   - name: Creating Server backup folder (file module)
     file:
        state: "directory"
-       path: "/home/{{ server_user_name }}/Desktop/{{ server_bak_dir }}"
+       path: "/{{ server_bak_dir }}"
 
 
   - name: Starting and enabling Service (service module)     
