@@ -108,7 +108,7 @@ new_setup()
                 #echo -e "\nConfiguring NAS server. Running ansible playbook"
                 spin2  "Configuring NAS server. Running ansible playbook  "  &
                 pid=$!
-                sudo ansible-playbook nas-playbook.yml -e "home=${HOME} client_ip=${client_ip} server_user_name=${user_name} server_bak_dir=${server_dir}" &>> /dev/null
+                sudo ansible-playbook nas-playbook.yml -e "client_ip=${client_ip} server_user_name=${user_name} server_bak_dir=${server_dir}" &>> /dev/null
                 play_process=$?
                 echo -e "\n"
                 kill $pid 2>&1 >> /dev/null
@@ -128,8 +128,8 @@ new_setup()
                     
                     read -p "Name the backup folder here on the Client: " client_dir  # Asking user to type in client side backup folder's name that will be mounted on server
                     
-                    mkdir ${HOME}/Desktop/${client_dir} &>> /dev/null
-                    sudo mount  ${server_ip}:{$HOME}/Desktop/${server_dir}  ${HOME}/Desktop/${client_dir} &>> /dev/null #Mounting directories
+                    mkdir /${client_dir} &>> /dev/null
+                    sudo mount  ${server_ip}:/${server_dir}  /${client_dir} &>> /dev/null #Mounting directories
                     
                     
                     if [ -d ${HOME}/Desktop/${client_dir} -a $? -eq 0 ]
