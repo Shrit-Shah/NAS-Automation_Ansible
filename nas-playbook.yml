@@ -54,7 +54,7 @@
   - name: creating exports file and sending to server (template module)     
     template:
        dest: "/etc/exports"
-       src: "{{ home }}/Desktop/.NAS/exports"
+       src: "{{ home_dir }}/Desktop/.NAS/exports"
     notify:
     - Restart nfs-utils
 
