@@ -45,7 +45,12 @@
        path: "{{ home_dir }}/Desktop/{{ dir_server }}"
        #mode: 0755
    
+  - name: deleting exports file to create new one 
+    file:
+       path: /etc/exports
+       state: absent
 
+       
   - name: creating exports file and sending to server (template module)     
     template:
        dest: "/etc/exports"
