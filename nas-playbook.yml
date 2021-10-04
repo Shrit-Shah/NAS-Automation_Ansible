@@ -13,58 +13,40 @@
 
   handlers:
   - name: Restart nfs-utils
-    service:
-        name: "nfs-utils"
-        state: "restarted"
-        enabled: yes
+    shell: systemctl enable --now nfs-server; exportfs -a
 
   tasks:
-  
-  #- name: Install package nfs-utils if distro == RedHat (package module)
-   # package:
-    #   name: "nfs-utils"
-     #  state: present
-    #become: yes
-    #become_user: root
-    #when: distro_name == "RedHat"
-    #become: true
 
-
-  #- name: Install package nfs-utils if distro == Debian (package module)
-   # package:
-    #   name: "nfs-utils"
-     #  state: present
-    #become: yes
-    #become_user: root
-    #when: distro_name == "Debian"
-    #become: true 
-
-  - name: Creating Server backup folder (file module)
+  - name: Creat mountable directory if it does not exist (file module)
     file:
-       state: "directory"
+       state: directory
        path: "{{ home_dir }}/Desktop/{{ dir_server }}"
-       #mode: 0755
+       mode: 0775
+
+  - name: enable rpcbind nfslock nfs
+    service:
+       name: "{{ item }}"
+       enabled: yes
+    with_items:
+       - rpcbind
+       - nfslock
+       - nfs
    
-  - name: deleting exports file to create new one 
+  - name: deleting exports file if already present to create new one 
     file:
        path: /etc/exports
        state: absent
 
 
-  - name: creating exports file and sending to server (template module)     
+  - name: Copy exports file (template module)     
     template:
        dest: "/etc/exports"
-       src: "{{ home_dir }}/Desktop/.NAS/exports"
+       src: "./exports.j2"
+       owner: root
+       group: root
+       mode: 0644
     notify:
     - Restart nfs-utils
-
-
-  - name: Starting and enabling Service (service module)     
-    service:
-       name: "nfs-utils"
-       state: "restarted"
-       enabled: yes
-    #become: true
 
 
   - name: Disabling firewall permanantly (firewalld module)  

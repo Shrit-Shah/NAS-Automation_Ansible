@@ -113,7 +113,7 @@ new_setup()
                 echo -e "\nHome directory of ${server_ip} is '${server_home_dir}'"
 
 
-                echo -e "${server_home_dir}/Desktop/${server_dir} ${client_ip}(rw,no_root_squash)" > ${server_home_dir}/Desktop/.NAS/exports
+                #echo -e "${server_home_dir}/Desktop/${server_dir} *(rw,no_root_squash)" > ${server_home_dir}/Desktop/.NAS/exports.j2
                 spin2  "Configuring NAS server. Running ansible playbook  "  &
                 pid=$!
                 ansible-playbook nas-playbook.yml --extra-vars "home=${server_home_dir} server_bak_dir=${server_dir}" -vvv
