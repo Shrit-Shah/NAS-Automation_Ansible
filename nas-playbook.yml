@@ -1,6 +1,6 @@
 - name: Let's setup NAS server on remote server
   remote_user: root
-  sudo: yes
+  become: yes
 
   hosts: all
   #become: yes
