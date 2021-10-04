@@ -156,7 +156,7 @@ new_setup()
                         echo -e "Setup on both client and server \033[1mSUCCESSFULL\033[0m\n\n"
                     fi
                 else
-                    echo "Server Configuration failed, playbook didn't executed"	
+                    echo -e "Server Configuration failed, playbook didn't executed\n"	
                 
                 fi
                 
