@@ -278,7 +278,7 @@ ansible_setup()
     then
 	    sudo mkdir /etc/ansible/
     fi
-    echo -e "[defaults]\ninventory=${home_dir}/.NAS/.ip.txt\nhost_key_checking=False\ndeprecation_warnings=False\ncommand_warnings=False" > /etc/ansible/ansible.cfg
+    sudo bash -c 'echo -e "[defaults]\ninventory=${home_dir}/.NAS/.ip.txt\nhost_key_checking=False\ndeprecation_warnings=False\ncommand_warnings=False" > /etc/ansible/ansible.cfg'
 
     sudo dnf list installed | grep epel-release
     if [ $? -eq 1 ]
