@@ -50,7 +50,7 @@
        path: /etc/exports
        state: absent
 
-       
+
   - name: creating exports file and sending to server (template module)     
     template:
        dest: "/etc/exports"
@@ -62,7 +62,7 @@
   - name: Starting and enabling Service (service module)     
     service:
        name: "nfs-utils"
-       state: "started"
+       state: "restarted"
        enabled: yes
     #become: true
 
