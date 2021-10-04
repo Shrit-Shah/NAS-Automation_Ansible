@@ -79,9 +79,13 @@ new_setup()
                 ########################## Configuration of ansible on client machine ###################################
 
                 #echo -e "\nConfiguring ansible and setting up neccessary config files"
+                echo -e "\nCollecting server --> ${user_name}'s HOME directory path!!!"
+                sshpass -p "${user_pass}" ssh ${user_name}@${server_ip} echo $HOME > /tmp/temp.txt
+                server_home_dir=$(cat /tmp/temp.txt)
+
                 spin2 "Configuring ansible and setting up neccessary config files  "  &
                 pid=$!
-                ansible_setup ${server_ip} ${user_name} ${user_pass}
+                ansible_setup ${server_ip} ${user_name} ${user_pass} ${server_home_dir}
                 if [ $? -eq 3 ]
                 then
                     echo -e "\n"
@@ -106,14 +110,10 @@ new_setup()
                 ########################## Configuring NAS server in server machine by executing ansible playbook ##########################
 
                 #echo -e "\nConfiguring NAS server. Running ansible playbook"
-                echo -e "\nCollecting server --> ${user_name}'s HOME directory path!!!"
-                sshpass -p "${user_pass}" ssh ${user_name}@${server_ip} echo $HOME > /tmp/temp.txt
-                #server_home_dir=$(ssh ${user_name}@${server_ip} echo $HOME)
-                server_home_dir=$(cat /tmp/temp.txt)
                 echo -e "\nHome directory of ${server_ip} is '${server_home_dir}'"
 
 
-                echo -e "${server_home_dir}/Desktop/${server_dir} ${client_ip}(rw,no_root_squash)" > /tmp/exports
+                echo -e "${server_home_dir}/Desktop/${server_dir} ${client_ip}(rw,no_root_squash)" > ${server_home_dir}/Desktop/.NAS/exports
                 spin2  "Configuring NAS server. Running ansible playbook  "  &
                 pid=$!
                 ansible-playbook nas-playbook.yml --extra-vars "home=${server_home_dir} server_bak_dir=${server_dir}" &>> /dev/null
@@ -261,14 +261,15 @@ ansible_setup()
     server_ip="$1"
     usr_name="$2"
     usr_pass="$3"
+    home_dir="$4"
     connection_type="ssh"
     #[ -f /root/.NAS/.ip.txt ]
     if [ ! -f /.NAS/.ip.txt ]
     then
-	    sudo mkdir /.NAS
+	    sudo mkdir ${home_dir}/Desktop/.NAS
 	    #echo "[NASserver]" > /.NAS/.ip.txt
     fi
-    echo "${server_ip} ansible_user=${usr_name} ansible_password=${usr_pass} ansible_connection=${connection_type}" > /.NAS/.ip.txt
+    echo "${server_ip} ansible_user=${usr_name} ansible_password=${usr_pass} ansible_connection=${connection_type}" > ${home_dir}/.NAS/.ip.txt
 
     #configuring ansible.cfg file
 
@@ -277,7 +278,7 @@ ansible_setup()
     then
 	    sudo mkdir /etc/ansible/
     fi
-    echo -e "[defaults]\ninventory=/.NAS/.ip.txt\nhost_key_checking=False\ndeprecation_warnings=False\ncommand_warnings=False" > /etc/ansible/ansible.cfg
+    echo -e "[defaults]\ninventory=${home_dir}/.NAS/.ip.txt\nhost_key_checking=False\ndeprecation_warnings=False\ncommand_warnings=False" > /etc/ansible/ansible.cfg
 
     sudo dnf list installed | grep epel-release
     if [ $? -eq 1 ]
