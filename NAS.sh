@@ -277,9 +277,9 @@ ansible_setup()
     then
 	    sudo mkdir /etc/ansible/
     fi
-    echo -e "[defaults]\ninventory=/.NAS/.ip.txt\nhost_key_checking=False\ndeprecation_warnings=False\ncommand_warnings=False\n" > /etc/ansible/ansible.cfg
+    echo -e "[defaults]\ninventory=/.NAS/.ip.txt\nhost_key_checking=False\ndeprecation_warnings=False\ncommand_warnings=False" > /etc/ansible/ansible.cfg
 
-    sudo dnf list installed | grep epel-release &>> /dev/null
+    sudo dnf list installed | grep epel-release
     if [ $? -eq 1 ]
     then
         sudo ping -c 1 8.8.8.8 &>> /dev/null
@@ -288,7 +288,7 @@ ansible_setup()
             sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm -y &>> /dev/null
             sudo dnf upgrade &>> /dev/null
             
-            sudo dnf list installed | grep sshpass &>> /dev/null
+            sudo dnf list installed | grep sshpass
             if [ $? -eq 1 ]
             then
                 sudo ping -c 1 8.8.8.8 &>> /dev/null    
@@ -321,7 +321,7 @@ ansible_setup()
     elif [ $? -eq 0 ]
     then
         sudo dnf upgrade &>> /dev/null
-        sudo dnf list installed | grep sshpass &>> /dev/null
+        sudo dnf list installed | grep sshpass
         if [ $? -eq 1 ]
         then
             sudo ping -c 1 8.8.8.8 &>> /dev/null
