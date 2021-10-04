@@ -263,18 +263,18 @@ ansible_setup()
     usr_pass="$3"
     home_dir="$4"
     connection_type="ssh"
-    #[ -f /root/.NAS/.ip.txt ]
-    if [ ! -f /.NAS/.ip.txt ]
+    [ -f ${home_dir}/Desktop/.NAS/.ip.txt ]
+    if [ $? -eq 1 ]
     then
-	    sudo mkdir ${home_dir}/Desktop/.NAS
+	    mkdir ${home_dir}/Desktop/.NAS
 	    #echo "[NASserver]" > /.NAS/.ip.txt
     fi
-    echo "${server_ip} ansible_user=${usr_name} ansible_password=${usr_pass} ansible_connection=${connection_type}" > ${home_dir}/.NAS/.ip.txt
+    echo "${server_ip} ansible_user=${usr_name} ansible_password=${usr_pass} ansible_connection=${connection_type}" > ${home_dir}/Desktop/.NAS/.ip.txt
 
     #configuring ansible.cfg file
 
-   #[ -d /etc/ansible/ ]
-    if [ ! -d /etc/ansible/ ]
+    [ -d /etc/ansible/ ]
+    if [ $? -eq 1]
     then
 	    sudo mkdir /etc/ansible/
     fi
