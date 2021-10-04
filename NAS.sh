@@ -161,8 +161,7 @@ new_setup()
                 fi
                 
             else
-                echo "Connection Failed"
-            
+                echo "Connection Failed"           
             fi
             
             ;;
