@@ -31,6 +31,8 @@
        - rpcbind
        - nfslock
        - nfs
+    ignore_errors: yes
+    
    
   - name: deleting exports file if already present to create new one 
     file:
