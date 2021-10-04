@@ -274,7 +274,7 @@ ansible_setup()
     #configuring ansible.cfg file
 
     [ -d /etc/ansible/ ]
-    if [ $? -eq 1]
+    if [ $? -eq 1 ]
     then
 	    sudo mkdir /etc/ansible/
     fi
