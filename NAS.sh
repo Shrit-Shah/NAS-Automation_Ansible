@@ -141,7 +141,7 @@ new_setup()
                     if [ $? -eq 1 ]
                     then
                         sudo mount  ${server_ip}:${server_home_dir}/Desktop/${server_dir}  /${HOME}/Desktop/${client_dir} &>> /dev/null #Mounting directories
-                        if [ $? -eq 0]
+                        if [ $? -eq 0 ]
                         then
                             #if [ -d ${HOME}/Desktop/${client_dir} -a $? -eq 0 ]
                             #then    
@@ -286,7 +286,7 @@ ansible_setup()
     fi
     echo -e "[defaults]\ninventory=${home_dir}/Desktop/.NAS/.ip.txt\nhost_key_checking=False\ndeprecation_warnings=False\ncommand_warnings=False" | sudo tee /etc/ansible/ansible.cfg 
 
-    sudo dnf list installed | grep epel-release
+    sudo dnf list installed | grep epel-release &>> /dev/null
     if [ $? -eq 1 ]
     then
         sudo ping -c 1 8.8.8.8 &>> /dev/null
