@@ -44,14 +44,6 @@
        state: "directory"
        path: "{{ home_dir }}/Desktop/{{ dir_server }}"
        #mode: 0755
-
-
-  - name: Starting and enabling Service (service module)     
-    service:
-       name: "nfs-utils"
-       state: "started"
-       enabled: yes
-    #become: true
    
 
   - name: creating exports file and sending to server (template module)     
@@ -60,6 +52,14 @@
        src: "/tmp/exports"
     notify:
     - Restart nfs-utils
+
+
+  - name: Starting and enabling Service (service module)     
+    service:
+       name: "nfs-utils"
+       state: "started"
+       enabled: yes
+    #become: true
 
 
   - name: Disabling firewall permanantly (firewalld module)  
