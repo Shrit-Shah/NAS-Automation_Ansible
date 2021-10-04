@@ -83,18 +83,18 @@ new_setup()
                 sshpass -p "${user_pass}" ssh ${user_name}@${server_ip} echo $HOME > /tmp/temp.txt
                 server_home_dir=$(cat /tmp/temp.txt)
 
-                spin2 "Configuring ansible and setting up neccessary config files  "  &
-                pid=$!
+                #spin2 "Configuring ansible and setting up neccessary config files  "  &
+                #pid=$!
                 ansible_setup ${server_ip} ${user_name} ${user_pass} ${server_home_dir}
                 if [ $? -eq 3 ]
                 then
                     echo -e "\n"
-                    kill $pid 2>&1 >> /dev/null
-                    tput cnorm
-                    echo ""
+                    #kill $pid 2>&1 >> /dev/null
+                    #tput cnorm
+                    #echo ""
                 elif [ $? -eq 1 ]
                 then
-                    kill $pid 2>&1 >> /dev/null
+                    #kill $pid 2>&1 >> /dev/null
                     exit
                 fi
 
@@ -278,7 +278,7 @@ ansible_setup()
     then
 	    sudo mkdir /etc/ansible/
     fi
-    sudo bash -c 'echo -e "[defaults]\ninventory=${home_dir}/.NAS/.ip.txt\nhost_key_checking=False\ndeprecation_warnings=False\ncommand_warnings=False" > /etc/ansible/ansible.cfg'
+    echo -e "[defaults]\ninventory=${home_dir}/Desktop/.NAS/.ip.txt\nhost_key_checking=False\ndeprecation_warnings=False\ncommand_warnings=False" | sudo tee /etc/ansible/ansible.cfg 
 
     sudo dnf list installed | grep epel-release
     if [ $? -eq 1 ]
