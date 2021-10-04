@@ -1,7 +1,7 @@
 - name: Let's setup NAS server on remote server
   remote_user: root
   sudo: yes
-  
+
   hosts: all
   #become: yes
   #become_user: root
@@ -42,7 +42,7 @@
   - name: Creating Server backup folder (file module)
     file:
        state: "directory"
-       path: "/{{ home_dir }}/Desktop/{{ dir_server }}"
+       path: "{{ home_dir }}/Desktop/{{ dir_server }}"
        #mode: 0755
 
 

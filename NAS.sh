@@ -107,14 +107,16 @@ new_setup()
 
                 #echo -e "\nConfiguring NAS server. Running ansible playbook"
                 echo -e "\nCollecting server --> ${user_name}'s HOME directory path!!!"
-                ssh ${user_name}@${server_ip} whoami > /tmp/temp.txt
+                sshpass -p "${user_pass}" ssh ${user_name}@${server_ip} echo $HOME > /tmp/temp.txt
                 #server_home_dir=$(ssh ${user_name}@${server_ip} echo $HOME)
                 server_home_dir=$(cat /tmp/temp.txt)
-                echo -e "\nHome directory of ${server_ip} is '/${server_home_dir}'"
-                echo -e "/${server_home_dir}/Desktop/${server_dir} ${client_ip}(rw,no_root_squash)" > /tmp/exports
+                echo -e "\nHome directory of ${server_ip} is '${server_home_dir}'"
+
+
+                echo -e "${server_home_dir}/Desktop/${server_dir} ${client_ip}(rw,no_root_squash)" > /tmp/exports
                 spin2  "Configuring NAS server. Running ansible playbook  "  &
                 pid=$!
-                ansible-playbook nas-playbook.yml --extra-vars "home=/${server_home_dir} server_bak_dir=${server_dir}" &>> /dev/null
+                ansible-playbook nas-playbook.yml --extra-vars "home=${server_home_dir} server_bak_dir=${server_dir}" &>> /dev/null
                 play_process=$?
                 echo -e "\n"
                 kill $pid 2>&1 >> /dev/null
@@ -135,7 +137,7 @@ new_setup()
                     read -p "Name the backup folder here on the Client: " client_dir  # Asking user to type in client side backup folder's name that will be mounted on server
                     
                     mkdir /${HOME}/Desktop/${client_dir} &>> /dev/null
-                    sudo mount  ${server_ip}:/${server_home_dir}/Desktop/${server_dir}  /${HOME}/Desktop/${client_dir} &>> /dev/null #Mounting directories
+                    sudo mount  ${server_ip}:${server_home_dir}/Desktop/${server_dir}  /${HOME}/Desktop/${client_dir} &>> /dev/null #Mounting directories
                     
                     
                     if [ -d /${client_dir} -a $? -eq 0 ]
