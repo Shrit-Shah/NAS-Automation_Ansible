@@ -116,7 +116,7 @@ new_setup()
                 #echo -e "${server_home_dir}/Desktop/${server_dir} *(rw,no_root_squash)" > ${server_home_dir}/Desktop/.NAS/exports.j2
                 spin2  "Configuring NAS server. Running ansible playbook  "  &
                 pid=$!
-                ansible-playbook nas-playbook.yml --extra-vars "home=${server_home_dir} server_bak_dir=${server_dir}" >> /dev/null
+                ansible-playbook ./nas-playbook.yml --extra-vars "home=${server_home_dir} server_bak_dir=${server_dir}" >> /dev/null
                 play_process=$?
                 echo -e "\n"
                 kill $pid 2>&1 >> /dev/null
