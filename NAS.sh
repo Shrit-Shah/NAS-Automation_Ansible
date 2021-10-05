@@ -140,8 +140,14 @@ new_setup()
                     df -h | grep ${HOME}/Desktop/${client_dir}
                     if [ $? -eq 1 ]
                     then
+                        spin2 "Mounting client folder to server for sync" &
+                        pid=$!
                         sudo mount  ${server_ip}:${server_home_dir}/Desktop/${server_dir}  /${HOME}/Desktop/${client_dir} &>> /dev/null #Mounting directories
-                        if [ $? -eq 0 ]
+                        mount=$?
+                        sleep 5
+                        echo -e "\n"
+                        kill $pid 2>&1 >> /dev/null
+                        if [ $mount -eq 0 ]
                         then
                             #if [ -d ${HOME}/Desktop/${client_dir} -a $? -eq 0 ]
                             #then    
