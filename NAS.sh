@@ -397,6 +397,10 @@ load_animation()
 }
 load
 
+Backup_func()
+{
+
+}
 
 main()
 {
@@ -404,9 +408,9 @@ main()
     while [ 0 ]
     do
         echo "-----------------------------------------------------------------------------"
-        echo -e "\v\t1) Setup new storage \n\t2) Modify existing configuration \n\t3) Remove all NAS connections \n\tExit)  Press ESC and enter to exit" #Main Menu
+        echo -e "\v\t1) Setup new storage \n\t2) Modify existing configuration \n\t3) Create Backup\n\t4) Remove all NAS connections \n\n\tExit Press ESC and enter to exit" #Main Menu
 
-        read -p "--> " menu_opt
+        read -s -p "--> " menu_opt
 
         case $menu_opt in 
             1) 
@@ -415,7 +419,12 @@ main()
             2) 
                 modify_setup
                 ;;
-            3) 
+
+            3)
+                Backup_func
+                ;;
+
+            4) 
                 uninstall
                 ;;
 
