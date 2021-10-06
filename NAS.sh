@@ -419,7 +419,7 @@ main()
                 uninstall
                 ;;
             00) 
-                echo "Exiting..."
+                echo "Cleaning up and Exiting..."
                 sleep 3
                 clear
                 break
