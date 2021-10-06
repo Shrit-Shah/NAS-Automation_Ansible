@@ -399,7 +399,14 @@ load
 
 Backup_func()
 {
-    echo "doing"
+    read -p "Enter complete path of the folder you want to backup --> " filename
+    echo -e "\nBackup will be created as 'filename.tar.gz' at '$HOME/Desktop/' location\n"
+    spin2 "Creating a Compressed backup..." &
+    pid=$!
+    tar -cfj $HOME/Desktop/backup-$(date "+%d-%m-%Y_%H-%M-%S").tar.tbz  $filename
+    sleep 5
+    echo -e "\n"
+    kill $pid 2>&1 >> /dev/null
 }
 
 main()
@@ -408,9 +415,9 @@ main()
     while [ 0 ]
     do
         echo "-----------------------------------------------------------------------------"
-        echo -e "\v\t1) Setup new storage \n\t2) Modify existing configuration \n\t3) Create Backup\n\t4) Remove all NAS connections \n\n\tExit Press ESC and enter to exit" #Main Menu
+        echo -e "\v\t1) Setup new storage \n\t2) Modify existing configuration \n\t3) Create compressed archived Backup\n\t4) Remove all NAS connections \n\n\t Press ESC and enter to exit" #Main Menu
 
-        read -s -p "--> " menu_opt
+        read  -p "--> " menu_opt
 
         case $menu_opt in 
             1) 
