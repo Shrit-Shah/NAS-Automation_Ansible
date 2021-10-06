@@ -418,6 +418,7 @@ do
             ;;
         00) 
             echo "Exiting"
+            clear
             break
             ;;
         *)
