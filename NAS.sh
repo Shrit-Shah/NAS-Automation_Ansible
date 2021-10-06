@@ -414,6 +414,7 @@ Backup_func()
         echo -e "\n Backup crated!!!"
     else
         echo -e "\nUnable to create backup!!!"
+    fi
 }
 
 main()
