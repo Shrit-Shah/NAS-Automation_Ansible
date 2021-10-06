@@ -147,6 +147,8 @@ new_setup()
                         sleep 5
                         echo -e "\n"
                         kill $pid 2>&1 >> /dev/null
+                        tput cnorm
+                        echo ""
                         if [ $mount -eq 0 ]
                         then
                             #if [ -d ${HOME}/Desktop/${client_dir} -a $? -eq 0 ]
@@ -409,6 +411,9 @@ Backup_func()
     sleep 5
     echo -e "\n"
     kill $pid 2>&1 >> /dev/null
+    tput cnorm
+    echo ""
+    
     if [ $success_command -eq 0 ]
     then
         echo -e "\n Backup created!!!"
