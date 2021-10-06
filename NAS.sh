@@ -80,12 +80,14 @@ new_setup()
 
                 #echo -e "\nConfiguring ansible and setting up neccessary config files"
                 echo -e "\nCollecting server --> ${user_name}'s HOME directory path!!!"
-                sshpass -p "${user_pass}" ssh ${user_name}@${server_ip} echo $HOME > /tmp/temp.txt
+                ssh-keygen -R ${server_ip}
+                ssh ${user_name}@${server_ip} echo $HOME > /tmp/temp.txt
                 server_home_dir=$(cat /tmp/temp.txt)
+                client_home_dir=$HOME
 
                 #spin2 "Configuring ansible and setting up neccessary config files  "  &
                 #pid=$!
-                ansible_setup ${server_ip} ${user_name} ${user_pass} ${server_home_dir}
+                ansible_setup ${server_ip} ${user_name} ${user_pass}
                 if [ $? -eq 3 ]
                 then
                     echo -e "\n"
@@ -116,7 +118,7 @@ new_setup()
                 #echo -e "${server_home_dir}/Desktop/${server_dir} *(rw,no_root_squash)" > ${server_home_dir}/Desktop/.NAS/exports.j2
                 spin2  "Configuring NAS server. Running ansible playbook  "  &
                 pid=$!
-                ansible-playbook ./nas-playbook.yml --extra-vars "home=${server_home_dir} server_bak_dir=${server_dir}" >> /dev/null
+                ansible-playbook ./nas-playbook.yml --extra-vars "server_home_dir=${server_home_dir} server_dir=${server_dir}" >> /dev/null
                 play_process=$?
                 echo -e "\n"
                 kill $pid 2>&1 >> /dev/null
@@ -131,18 +133,18 @@ new_setup()
                 then
                 
                     echo -e "\n Server configuration successfull. \033[1m(${server_ip})\033[0m node is now configured as \033[4mNAS Backup Server\033[0m\n"
-                    echo -e "Name and location of Backup folder on server with ip-->(${server_ip}) is '\033[1m/home/${user_name}/Desktop/${server_dir}/\033[0m'\n"
+                    echo -e "Name and location of Backup folder on server with ip-->(${server_ip}) is '\033[1m${server_home_dir}/Desktop/${server_dir}/\033[0m'\n"
                     echo -e "Now for configuring client...\n\n"
                     
                     read -p "Name the backup folder here on the Client: " client_dir  # Asking user to type in client side backup folder's name that will be mounted on server
-                    mkdir ${HOME}/Desktop/${client_dir} &>> /dev/null
+                    mkdir ${client_home_dir}/Desktop/${client_dir} &>> /dev/null
                     
-                    df -h | grep ${HOME}/Desktop/${client_dir}
+                    df -h | grep ${client_home_dir}/Desktop/${client_dir}
                     if [ $? -eq 1 ]
                     then
-                        spin2 "Mounting client folder to server for sync" &
+                        spin2 "Mounting client folder onto server folder" &
                         pid=$!
-                        sudo mount  ${server_ip}:${server_home_dir}/Desktop/${server_dir}  /${HOME}/Desktop/${client_dir} &>> /dev/null #Mounting directories
+                        sudo mount  ${server_ip}:${server_home_dir}/Desktop/${server_dir}  /${client_home_dir}/Desktop/${client_dir} &>> /dev/null #Mounting directories
                         mount=$?
                         sleep 5
                         echo -e "\n"
@@ -274,7 +276,7 @@ ansible_setup()
     server_ip="$1"
     usr_name="$2"
     usr_pass="$3"
-    home_dir="$4"
+    home_dir="$HOME"
     connection_type="ssh"
     [ -f ${home_dir}/Desktop/.NAS/.ip.txt ]
     if [ $? -eq 1 ]

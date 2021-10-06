@@ -8,8 +8,8 @@
 
   vars:
   #- distro_name: "{{ ansible_facts['distribution'] }}"
-  - home_dir: "{{ home }}"
-  - dir_server: "{{ server_bak_dir }}"
+  - server_home_dir: "{{ server_home_dir }}"
+  - server_dir: "{{ server_dir }}"
 
   handlers:
   - name: Restart nfs-utils
@@ -20,7 +20,7 @@
   - name: Creat mountable directory if it does not exist (file module)
     file:
        state: directory
-       path: "{{ home_dir }}/Desktop/{{ dir_server }}"
+       path: "{{ server_home_dir }}/Desktop/{{ server_dir }}"
        mode: 0775
 
   - name: enable rpcbind nfslock nfs
