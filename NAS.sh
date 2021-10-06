@@ -404,7 +404,7 @@ main()
     while [ 0 ]
     do
         echo "-----------------------------------------------------------------------------"
-        echo -e "\v\t1) Setup new storage \n\t2) Modify existing configuration \n\t3) Remove all NAS connections \n\tExit) Press ESC to exit" #Main Menu
+        echo -e "\v\t1) Setup new storage \n\t2) Modify existing configuration \n\t3) Remove all NAS connections \n\tExit)  Press ESC and enter to exit" #Main Menu
 
         read -p "--> " menu_opt
 
