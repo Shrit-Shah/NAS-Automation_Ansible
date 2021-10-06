@@ -399,7 +399,7 @@ load
 
 Backup_func()
 {
-
+    echo "doing"
 }
 
 main()
