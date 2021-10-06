@@ -208,7 +208,7 @@ new_setup()
     #then
 
         2)
-            echo "Coming Soon!!"
+            echo "Working on it!!!"
             #$client_ip=$(dig +short myip.opendns.com @resolver1.opendns.com) # Client Public IP-address
             ;;
         
