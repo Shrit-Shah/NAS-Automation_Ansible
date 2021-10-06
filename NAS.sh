@@ -404,7 +404,7 @@ main()
     while [ 0 ]
     do
         echo "-----------------------------------------------------------------------------"
-        echo -e "\v\t1) Setup new storage \n\t2) Modify existing configuration \n\t3) Remove all NAS connections \n\t00) Exit" #Main Menu
+        echo -e "\v\t1) Setup new storage \n\t2) Modify existing configuration \n\t3) Remove all NAS connections \n\tExit) Press ESC to exit" #Main Menu
 
         read -p "--> " menu_opt
 
@@ -418,7 +418,8 @@ main()
             3) 
                 uninstall
                 ;;
-            00) 
+
+            $'\e') 
                 echo "Cleaning up and Exiting..."
                 sleep 3
                 clear
