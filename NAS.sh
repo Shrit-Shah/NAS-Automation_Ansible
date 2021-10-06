@@ -417,7 +417,8 @@ do
             uninstall
             ;;
         00) 
-            echo "Exiting"
+            echo "Exiting..."
+            sleep 3
             clear
             break
             ;;
