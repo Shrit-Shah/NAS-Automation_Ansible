@@ -8,8 +8,8 @@
 
   vars:
   #- distro_name: "{{ ansible_facts['distribution'] }}"
-  - server_home_dir: "{{ server_home_dir }}"
-  - server_dir: "{{ server_dir }}"
+  - server_home_dir_internal: "{{ server_home_dir }}"
+  - server_dir_internal: "{{ server_dir }}"
 
   handlers:
   - name: Restart nfs-utils
@@ -17,10 +17,14 @@
 
   tasks:
 
+  - name: debug variables
+    debug: 
+       msg: Server's Home directory --> {{ server_home_dir_internal }}, and backup directory is --> {{ server_dir_internal }}
+
   - name: Creat mountable directory if it does not exist (file module)
     file:
        state: directory
-       path: "{{ server_home_dir }}/Desktop/{{ server_dir }}"
+       path: "{{ server_home_dir_internal }}/Desktop/{{ server_dir_internal }}"
        mode: 0775
 
   - name: enable rpcbind nfslock nfs
