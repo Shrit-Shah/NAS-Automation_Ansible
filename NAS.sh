@@ -398,34 +398,39 @@ load_animation()
 load
 
 
+main()
+{
 
-while [ 0 ]
-do
-    echo "-----------------------------------------------------------------------------"
-    echo -e "\v\t1) Setup new storage \n\t2) Modify existing configuration \n\t3) Remove all NAS connections \n\t00) Exit" #Main Menu
+    while [ 0 ]
+    do
+        echo "-----------------------------------------------------------------------------"
+        echo -e "\v\t1) Setup new storage \n\t2) Modify existing configuration \n\t3) Remove all NAS connections \n\t00) Exit" #Main Menu
 
-    read -p "--> " menu_opt
+        read -p "--> " menu_opt
 
-    case $menu_opt in 
-        1) 
-            new_setup
-            ;;
-        2) 
-            modify_setup
-            ;;
-        3) 
-            uninstall
-            ;;
-        00) 
-            echo "Exiting..."
-            sleep 3
-            clear
-            break
-            ;;
-        *)
-            echo "Select valid option from the menu"
-            ;;
-    esac
-done
+        case $menu_opt in 
+            1) 
+                new_setup
+                ;;
+            2) 
+                modify_setup
+                ;;
+            3) 
+                uninstall
+                ;;
+            00) 
+                echo "Exiting..."
+                sleep 3
+                clear
+                break
+                ;;
+            *)
+                echo "Select valid option from the menu"
+                ;;
+        esac
+    done
+}
+
+main
 
 exit 0 &>> /dev/null
