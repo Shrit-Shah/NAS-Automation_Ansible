@@ -400,18 +400,18 @@ load
 Backup_func()
 {
     read -p "Enter complete path of the folder you want to backup --> " filename
-    read -p "Enter path of directory where you want backup to be created" backup_dir
+    read -p "Enter path of directory where you want backup to be created --> " backup_dir
     echo -e "\nBackup will be created as 'filename.tar.gz' at '$HOME/Desktop/' location\n"
     spin2 "Creating a Compressed backup..." &
     pid=$!
-    tar -cfj $backup_dir/backup-$(date "+%d-%m-%Y_%H-%M-%S").tar.tbz  $filename
+    tar -cfj $backup_dir/backup-$(date "+%d-%m-%Y_%H-%M-%S").tar.tbz  $filename >> /dev/null
     success_command=$?
     sleep 5
     echo -e "\n"
     kill $pid 2>&1 >> /dev/null
     if [ $success_command -eq 0 ]
     then
-        echo -e "\n Backup crated!!!"
+        echo -e "\n Backup created!!!"
     else
         echo -e "\nUnable to create backup!!!"
     fi
