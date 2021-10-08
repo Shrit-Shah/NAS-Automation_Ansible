@@ -219,6 +219,7 @@ new_setup()
 
         
         $'\e')
+            clear
             main
             ;;
         
