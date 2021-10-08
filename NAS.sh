@@ -464,7 +464,7 @@ main()
                 echo "Cleaning up and Exiting..."
                 sleep 3
                 clear
-                break
+                exit 0 &>> /dev/null
                 ;;
             *)
                 echo "Select valid option from the menu"
