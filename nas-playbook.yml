@@ -57,3 +57,4 @@
 
   - name: Disabling firewall permanantly (firewalld module)  
     shell: systemctl stop --now firewalld
+    
