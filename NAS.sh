@@ -14,7 +14,7 @@ fi
 new_setup()
 
 {
-    echo -e "\vWhere do you want to setup your storage server? \n\n\t1) Another system on the same LAN. \n\t2) In a cloud virtual machine."
+    echo -e "\vWhere do you want to setup your storage server? \n\n\t1) Another system on the same LAN. \n\t2) In a cloud virtual machine.\n\n\t Press ESC and enter to go back to main menu"
     read -p "--> " server_location
 
     #if [ $server_location -eq "1" ]    ERROR: If none selected than error of "unary operator expected" comes at line 20 and 175
@@ -215,6 +215,11 @@ new_setup()
         2)
             echo "Working on it!!!"
             #$client_ip=$(dig +short myip.opendns.com @resolver1.opendns.com) # Client Public IP-address
+            ;;
+
+        
+        $'\e')
+            main
             ;;
         
 
