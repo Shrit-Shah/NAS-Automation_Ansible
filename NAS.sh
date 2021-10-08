@@ -443,13 +443,16 @@ main()
 
         case $menu_opt in 
             1) 
+                clear
                 new_setup
                 ;;
             2) 
+                clear
                 modify_setup
                 ;;
 
             3)
+                clear
                 Backup_func
                 ;;
 
