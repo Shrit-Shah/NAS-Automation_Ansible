@@ -121,7 +121,7 @@ new_setup()
                 ansible-playbook ./nas-playbook.yml --extra-vars "server_home_dir=${server_home_dir} server_dir=${server_dir}" >> /dev/null
                 play_process=$?
                 echo -e "\n"
-                kill $pid 2>&1 >> /dev/null
+                kill $pid &>> /dev/null
                 tput cnorm
                 echo ""
 
@@ -132,7 +132,7 @@ new_setup()
                 if [ $play_process -eq 0 ]
                 then
                 
-                    echo -e "\n Server configuration successfull. \033[1m(${server_ip})\033[0m node is now configured as \033[4mNAS Backup Server\033[0m\n"
+                    echo -e "\n Server configuration successfull.\n \033[1m(${server_ip})\033[0m node is now configured as \033[4mNAS Backup Server\033[0m\n"
                     echo -e "Name and location of Backup folder on server with ip-->(${server_ip}) is '\033[1m${server_home_dir}/Desktop/${server_dir}/\033[0m'\n"
                     echo -e "Now for configuring client...\n\n"
                     
