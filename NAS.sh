@@ -475,4 +475,4 @@ main()
 
 main
 
-exit 0 &>> /dev/null
+#exit 0 &>> /dev/null
