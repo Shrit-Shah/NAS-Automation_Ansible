@@ -144,6 +144,7 @@ new_setup()
                     then
                         spin2 "Mounting client folder onto server folder" &
                         pid=$!
+                        echo -e "\n"
                         sudo mount  ${server_ip}:${server_home_dir}/Desktop/${server_dir}  /${client_home_dir}/Desktop/${client_dir} &>> /dev/null #Mounting directories
                         mount=$?
                         sleep 5
