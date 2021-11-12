@@ -239,7 +239,7 @@ new_setup()
             then 
                 echo -e "Connection Successful\n"
 
-                read -p "Enter Server username: " usr_name
+                read -p "Enter Server username: " user_name
                 read -p "Enter location of Cloud-VM's pem Key file: " key_file
                 scp -i $key_file server.sh  ${user_name}@${server_ip}:/tmp/ &>> /dev/null
                 if [ $? -eq 0 ]
