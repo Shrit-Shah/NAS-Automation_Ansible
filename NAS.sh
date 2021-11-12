@@ -209,12 +209,70 @@ new_setup()
 
 
 
-    #elif [ $server_location -eq "2" ]
-    #then
-
         2)
-            echo "Working on it!!!"
+            #echo "Working on it!!!"
             #$client_ip=$(dig +short myip.opendns.com @resolver1.opendns.com) # Client Public IP-address
+
+            client_ip=$(dig +short myip.opendns.com @resolver1.opendns.com) # Client Public IP-address
+            read -p "Enter Public ip-address of the server system: " server_ip
+        
+            # IP validation - REGEX: ((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}
+
+            ################ Running ping command to check connectivity between server and client ######################
+
+            #echo -e "\nEstablishing connection to $server_ip "
+            spin2 "Establishing Connection to $server_ip  "  &    #adding loading animation to above echo line
+            pid=$!
+            ping -c 5 $server_ip &>> /dev/null
+            ping_process=$?   #Storing return code of above command in ping_process variable
+            echo -e "\n"
+            kill $pid 2>&1 >> /dev/null
+            tput cnorm
+            echo ""
+
+            ############################################################################################################
+
+            #ping -c 3 $server_ip &>> /dev/null
+            if [ $ping_process -eq 0 ]
+            then 
+                echo -e "Connection Successful\n"
+
+                read -p "Enter Server username: " usr_name
+                read -p "Enter location of Cloud-VM's pem Key file: " key_file
+                scp -i $key_file server.sh  ${usr_name}@${server_ip}:/tmp/ &>> /dev/null
+                if [ $? -eq 0 ]
+                then
+                    echo -e "\nSSH connection successful\n"
+                
+                    read -p "Name of backup folder on the Server: " server_bak_dir
+                    cmd=$(echo sudo bash /tmp/server.sh ${usr_name} ${server_bak_dir} ${client_ip})
+                    echo -e "\n Configuring NAS server on $server_ip ...\n"
+                    ssh -i $key_file ${usr_name}@${server_ip} $cmd
+                    if [ $? -eq 0 ]
+                    then   
+                        echo -e "\nServer configuration successful\n"
+                        read -p "Name of backup folder here on the Client: " client_dir
+                        mkdir ${HOME}/Desktop/${client_dir}
+                    
+                        sudo mount  ${server_ip}:/home/${usr_name}/Desktop/${server_bak_dir}  ${HOME}/Desktop/${client_dir} #Mounting directories
+                        if [ $? -eq 0 ]
+                        then    
+                            echo -e "\n Finalizing Setup...\t[This may take a minute]\n"
+                            cat 'Thank you for your time. Project by HARSHIL, SHRIT and NISARG'>Thank_You.txt
+                            cp Thank_You.txt ${HOME}/Desktop/${client_dir}/
+                            echo -e "\v\tSetup Successful\n"
+                            exit
+                        fi
+                    else
+                        echo "Server configuration failed"
+                    fi
+                else
+                    echo -e "SSH connection failed\nPlease run the below commands manually on the server system & run this script again."
+                    echo -e "\v\tsudo yum -y install openssh \n\tsudo systemctl enable --now sshd"
+                fi
+            else
+                echo "Connection Failed"
+            fi
             ;;
 
         
