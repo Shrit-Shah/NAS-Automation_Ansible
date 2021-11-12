@@ -159,10 +159,12 @@ new_setup()
                             echo -e "Setup on both client and server \033[1mSUCCESSFULL\033[0m\n\n"
                             echo -e "Name and location of Backup folder on your client machine having ip-->(${client_ip}) and Username-->${user_name} is '\033[1m${HOME}/Desktop/${client_dir}\033[0m'\n" 
                         else 
-                            echo "Setup configuration on client side FAILED"
-                                
-                            #fi
+                            echo "mount operation on client side FAILED"
                         fi
+                        echo -e "\n Finalizing Setup...\t[This may take a minute]\n"
+                        cp Thank_You.txt ${HOME}/Desktop/${client_dir}/
+                        echo -e "\v\tSetup Successful\n"
+
                     else
                         echo -e "Setup on both client and server \033[1mSUCCESSFULL\033[0m\n\n"
                     fi
