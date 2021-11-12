@@ -14,6 +14,7 @@ fi
 new_setup()
 
 {
+    client_ip=$(hostname -I | awk {'print $1}')
     echo -e "\vWhere do you want to setup your storage server? \n\n\t1) Another system on the same LAN. \n\t2) In a cloud virtual machine.\n\n\t Press ESC and enter to go back to main menu"
     read -p "--> " server_location
 
@@ -42,7 +43,7 @@ new_setup()
 
             # reading Client Private IP-address from client machine and taking server private IP address from user
 
-            client_ip=$(hostname -I | awk {'print $1}')
+            #client_ip=$(hostname -I | awk {'print $1}')
             read -p "Enter private ip-address of the server system: " server_ip
 
             
@@ -212,10 +213,8 @@ new_setup()
 
 
         2)
-            #echo "Working on it!!!"
-            #$client_ip=$(dig +short myip.opendns.com @resolver1.opendns.com) # Client Public IP-address
 
-            client_ip=$(dig +short myip.opendns.com @resolver1.opendns.com) # Client Public IP-address
+            #client_ip=$(dig +short myip.opendns.com @resolver1.opendns.com) # Client Public IP-address
             read -p "Enter Public ip-address of the server system: " server_ip
         
             # IP validation - REGEX: ((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}
