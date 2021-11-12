@@ -271,7 +271,7 @@ new_setup()
                             #if [ -d ${HOME}/Desktop/${client_dir} -a $? -eq 0 ]
                             #then    
                             echo -e "Setup on both client and server \033[1mSUCCESSFULL\033[0m\n\n"
-                            echo -e "Name and location of Backup folder on your client machine having ip-->(${client_ip}) and Username-->${user_name} is '\033[1m${HOME}/Desktop/${client_dir}\033[0m'\n" 
+                            echo -e "Name and location of Backup folder on your client machine having private ip-->(${client_ip}) and Username-->${user_name} is '\033[1m${HOME}/Desktop/${client_dir}\033[0m'\n" 
                         else 
                             echo "mount operation on client side FAILED"
                         fi
