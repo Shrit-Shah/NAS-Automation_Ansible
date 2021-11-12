@@ -45,6 +45,7 @@ new_setup()
 
             #client_ip=$(hostname -I | awk {'print $1}')
             read -p "Enter private ip-address of the server system: " server_ip
+            export $server_ip
 
             
             # IP validation - REGEX: ((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}
@@ -108,7 +109,7 @@ new_setup()
                 #scp server.sh  ${usr_name}@${server_ip}:/tmp/ &>> /dev/null
                 #echo -e "\n"
                 read -p "Name the backup folder on the Server: " server_dir  # Asking user to type in server side backup folder's name
-
+                export $server_dir
 
                 ########################## Configuring NAS server in server machine by executing ansible playbook ##########################
 
@@ -238,7 +239,8 @@ new_setup()
             then 
                 echo -e "Connection Successful\n"
 
-                read -p "Enter Server username: " user_name
+                #read -p "Enter Server username: " user_name
+                user_name="ec2-user"
                 read -p "Enter location of Cloud-VM's pem Key file: " key_file
                 scp -i $key_file server.sh  ${user_name}@${server_ip}:/tmp/ &>> /dev/null
                 if [ $? -eq 0 ]
@@ -246,6 +248,7 @@ new_setup()
                     echo -e "\nSSH connection successful\n"
                 
                     read -p "Name of backup folder on the Server: " server_bak_dir
+                    export $server_bak_dir
                     cmd=$(echo sudo bash /tmp/server.sh ${user_name} ${server_bak_dir} ${client_ip})
                     echo -e "\n Configuring NAS server on $server_ip ...\n"
                     ssh -i $key_file ${user_name}@${server_ip} $cmd
@@ -308,9 +311,70 @@ new_setup()
 
 
 
-modify_setup()
+add_clients()
 {
-    echo "Coming Soon!!"
+
+    echo -e "\t\033[1mNOTE:\033[0m clients are supposed to be on same LAN for this function to Work\n\n"
+    read -p "Enter client node's  private IP address: " client_priv_ip
+
+    ##################### Running ping command to check connectivity with client #############################
+
+            #echo -e "\nEstablishing connection to $server_ip "
+            spin2 "Establishing Connection to $client_priv_ip  "  &    #adding loading animation to above echo line
+            pid=$!
+            ping -c 5 $client_priv_ip &>> /dev/null
+            ping_process=$?   #Storing return code of above command in ping_process variable
+            echo -e "\n"
+            kill $pid 2>&1 >> /dev/null
+            tput cnorm
+            echo ""
+
+            if [ $ping_process -eq 0]
+            then
+                echo -e "\nConnection Successful\n"
+                read -p "Name of backup folder here on the Client: " client_dir
+                mkdir ${HOME}/Desktop/${client_dir} &>> /dev/null
+                echo -e "\vWhere is your server located? \n\n\t1) Another system on the same LAN. \n\t2) In a cloud virtual machine.\n\n\t Press ESC and enter to go back to main menu"
+                read -p "--> " server_location
+
+                case $server_location in
+
+                    1)
+                        ssh $client_priv_ip mkdir /root/Desktop/$client_dir
+                        ssh $client_priv_ip sudo mount ${server_ip}:/root/Desktop/${server_dir}  /root/Desktop/${client_dir} &>> /dev/null
+                        if [ $? -eq 0 ]
+                        then
+                            #if [ -d ${HOME}/Desktop/${client_dir} -a $? -eq 0 ]
+                            #then    
+                            echo -e "Setup on both client \033[1mSUCCESSFULL\033[0m\n\n"
+                            echo -e "Name and location of Backup folder on your client machine having ip-->(${client_priv_ip}) is '\033[1m/root/Desktop/${client_dir}\033[0m'\n" 
+                        else 
+                            echo "mount operation on client side FAILED"
+                        fi
+
+                    2)
+                        ssh $client_priv_ip mkdir /root/Desktop/$client_dir
+                        ssh $client_priv_ip sudo mount ${server_ip}:/home/ec2-user/Desktop/${server_bak_dir}  /root/Desktop/${client_dir} &>> /dev/null
+                        if [ $? -eq 0 ]
+                        then
+                            #if [ -d ${HOME}/Desktop/${client_dir} -a $? -eq 0 ]
+                            #then    
+                            echo -e "Setup on both client \033[1mSUCCESSFULL\033[0m\n\n"
+                            echo -e "Name and location of Backup folder on your client machine having ip-->(${client_priv_ip}) is '\033[1m/root/Desktop/${client_dir}\033[0m'\n" 
+                        else 
+                            echo "mount operation on client side FAILED"
+                        fi
+
+                    $'\e')
+                        clear
+                        main
+                        ;;
+
+                    *)
+                        echo -e "\vSelect valid option from the menu"
+                        ;;
+                esac
+
 }
 
 
@@ -511,7 +575,7 @@ main()
     while [ 0 ]
     do
         echo "-----------------------------------------------------------------------------"
-        echo -e "\v\t\033[1m\033[4mMain menu\033[4m\033[0m\n\n\t1) Setup new storage \n\t2) Modify existing configuration \n\t3) Create compressed archived Backup\n\t4) Remove all NAS connections \n\n\t Press ESC and enter to exit" #Main Menu
+        echo -e "\v\t\033[1m\033[4mMain menu\033[4m\033[0m\n\n\t1) Setup new storage \n\t2) Add more clients \n\t3) Create compressed archived Backup\n\t4) Remove all NAS connections \n\n\t Press ESC and enter to exit" #Main Menu
 
         read  -p "--> " menu_opt
 
@@ -522,7 +586,7 @@ main()
                 ;;
             2) 
                 clear
-                modify_setup
+                add_clients
                 ;;
 
             3)
