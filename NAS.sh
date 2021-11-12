@@ -239,30 +239,45 @@ new_setup()
 
                 read -p "Enter Server username: " usr_name
                 read -p "Enter location of Cloud-VM's pem Key file: " key_file
-                scp -i $key_file server.sh  ${usr_name}@${server_ip}:/tmp/ &>> /dev/null
+                scp -i $key_file server.sh  ${user_name}@${server_ip}:/tmp/ &>> /dev/null
                 if [ $? -eq 0 ]
                 then
                     echo -e "\nSSH connection successful\n"
                 
                     read -p "Name of backup folder on the Server: " server_bak_dir
-                    cmd=$(echo sudo bash /tmp/server.sh ${usr_name} ${server_bak_dir} ${client_ip})
+                    cmd=$(echo sudo bash /tmp/server.sh ${user_name} ${server_bak_dir} ${client_ip})
                     echo -e "\n Configuring NAS server on $server_ip ...\n"
-                    ssh -i $key_file ${usr_name}@${server_ip} $cmd
+                    ssh -i $key_file ${user_name}@${server_ip} $cmd
                     if [ $? -eq 0 ]
                     then   
                         echo -e "\nServer configuration successful\n"
                         read -p "Name of backup folder here on the Client: " client_dir
                         mkdir ${HOME}/Desktop/${client_dir}
                     
-                        sudo mount  ${server_ip}:/home/${usr_name}/Desktop/${server_bak_dir}  ${HOME}/Desktop/${client_dir} #Mounting directories
-                        if [ $? -eq 0 ]
-                        then    
-                            echo -e "\n Finalizing Setup...\t[This may take a minute]\n"
-                            cat 'Thank you for your time. Project by HARSHIL, SHRIT and NISARG'>Thank_You.txt
-                            cp Thank_You.txt ${HOME}/Desktop/${client_dir}/
-                            echo -e "\v\tSetup Successful\n"
-                            exit
+                        spin2 "Mounting client folder onto server folder" &
+                        pid=$!
+                        echo -e "\n"
+                        sudo mount  ${server_ip}:/home/${user_name}/Desktop/${server_bak_dir}  ${HOME}/Desktop/${client_dir} #Mounting directories
+                        mount=$?
+                        sleep 5
+                        echo -e "\n"
+                        kill $pid 2>&1 >> /dev/null
+                        tput cnorm
+                        echo ""
+
+                        if [ $mount -eq 0 ]
+                        then
+                            #if [ -d ${HOME}/Desktop/${client_dir} -a $? -eq 0 ]
+                            #then    
+                            echo -e "Setup on both client and server \033[1mSUCCESSFULL\033[0m\n\n"
+                            echo -e "Name and location of Backup folder on your client machine having ip-->(${client_ip}) and Username-->${user_name} is '\033[1m${HOME}/Desktop/${client_dir}\033[0m'\n" 
+                        else 
+                            echo "mount operation on client side FAILED"
                         fi
+   
+                        echo -e "\n Finalizing Setup...\t[This may take a minute]\n"
+                        cp Thank_You.txt ${HOME}/Desktop/${client_dir}/
+                        echo -e "\v\tSetup Successful\n"
                     else
                         echo "Server configuration failed"
                     fi
