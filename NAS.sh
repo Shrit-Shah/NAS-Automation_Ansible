@@ -376,6 +376,9 @@ add_clients()
                         echo -e "\vSelect valid option from the menu"
                         ;;
                 esac
+            else
+                echo -e "\n Connection failed"
+            fi
 
 }
 
