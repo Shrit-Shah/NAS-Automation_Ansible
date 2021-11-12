@@ -317,7 +317,7 @@ add_clients()
     ##################### Running ping command to check connectivity with client #############################
 
             #echo -e "\nEstablishing connection to $server_ip "
-            spin2 "Establishing Connection to $client_priv_ip  "  &    #adding loading animation to above echo line
+            spin2 "Establishing Connection to ${client_priv_ip}  "  &    #adding loading animation to above echo line
             pid=$!
             ping -c 5 $client_priv_ip &>> /dev/null
             ping_process=$?   #Storing return code of above command in ping_process variable
@@ -339,6 +339,7 @@ add_clients()
                     1)
                         read -p "Enter the NAS server's folder name that is already created: " server_bak_dir
                         read -p "Enter the NAS server's private ip address: " server_ip
+                        ssh-keygen -R ${client_priv_ip}
                         ssh $client_priv_ip mkdir /root/Desktop/$client_dir
                         ssh $client_priv_ip sudo mount ${server_ip}:/root/Desktop/${server_bak_dir}  /root/Desktop/${client_dir} &>> /dev/null
                         if [ $? -eq 0 ]
@@ -355,6 +356,7 @@ add_clients()
                     2)  
                         read -p "Enter the NAS server's folder name that is already created: " server_bak_dir
                         read -p "Enter the NAS server's public ip address: " server_ip
+                        ssh-keygen -R ${client_priv_ip}
                         ssh $client_priv_ip mkdir /root/Desktop/$client_dir
                         ssh $client_priv_ip sudo mount ${server_ip}:/home/ec2-user/Desktop/${server_bak_dir}  /root/Desktop/${client_dir} &>> /dev/null
                         if [ $? -eq 0 ]
