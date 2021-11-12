@@ -351,6 +351,7 @@ add_clients()
                         else 
                             echo "mount operation on client side FAILED"
                         fi
+                        ;;
 
                     2)
                         ssh $client_priv_ip mkdir /root/Desktop/$client_dir
@@ -364,6 +365,7 @@ add_clients()
                         else 
                             echo "mount operation on client side FAILED"
                         fi
+                        ;;
 
                     $'\e')
                         clear
