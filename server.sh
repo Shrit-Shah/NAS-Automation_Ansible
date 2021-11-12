@@ -31,7 +31,7 @@ fi
 mkdir -p /home/${usr_name}/Desktop/${server_bak_dir}  # Create server backup folder
 sudo chmod 777 /home/${usr_name}/Desktop/${server_bak_dir}
 
-echo "/home/${usr_name}/Desktop/${server_bak_dir} *(rw,no_root_squash,insecure)" | cat > /etc/exports
+echo "/home/${usr_name}/Desktop/${server_bak_dir} *(rw,no_root_squash,insecure)" | cat >> /etc/exports
 sudo chmod 644 /var/lib/nfs/.etab.lock
 
 systemctl restart nfs-server # Restarting NAS Server
