@@ -45,7 +45,6 @@ new_setup()
 
             #client_ip=$(hostname -I | awk {'print $1}')
             read -p "Enter private ip-address of the server system: " server_ip
-            export $server_ip
 
             
             # IP validation - REGEX: ((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}
@@ -109,7 +108,6 @@ new_setup()
                 #scp server.sh  ${usr_name}@${server_ip}:/tmp/ &>> /dev/null
                 #echo -e "\n"
                 read -p "Name the backup folder on the Server: " server_dir  # Asking user to type in server side backup folder's name
-                export $server_dir
 
                 ########################## Configuring NAS server in server machine by executing ansible playbook ##########################
 
@@ -248,7 +246,6 @@ new_setup()
                     echo -e "\nSSH connection successful\n"
                 
                     read -p "Name of backup folder on the Server: " server_bak_dir
-                    export $server_bak_dir
                     cmd=$(echo sudo bash /tmp/server.sh ${user_name} ${server_bak_dir} ${client_ip})
                     echo -e "\n Configuring NAS server on $server_ip ...\n"
                     ssh -i $key_file ${user_name}@${server_ip} $cmd
@@ -332,7 +329,7 @@ add_clients()
             if [ $ping_process -eq 0 ]
             then
                 echo -e "\nConnection Successful\n"
-                read -p "Name of backup folder here on the Client: " client_dir
+                read -p "Name of backup folder to be created on $client_priv_ip: " client_dir
                 mkdir ${HOME}/Desktop/${client_dir} &>> /dev/null
                 echo -e "\vWhere is your server located? \n\n\t1) Another system on the same LAN. \n\t2) In a cloud virtual machine.\n\n\t Press ESC and enter to go back to main menu"
                 read -p "--> " server_location
@@ -340,8 +337,10 @@ add_clients()
                 case $server_location in
 
                     1)
+                        read -p "Enter the NAS server's folder name that is already created: " server_bak_dir
+                        read -p "Enter the NAS server's private ip address: " server_ip
                         ssh $client_priv_ip mkdir /root/Desktop/$client_dir
-                        ssh $client_priv_ip sudo mount ${server_ip}:/root/Desktop/${server_dir}  /root/Desktop/${client_dir} &>> /dev/null
+                        ssh $client_priv_ip sudo mount ${server_ip}:/root/Desktop/${server_bak_dir}  /root/Desktop/${client_dir} &>> /dev/null
                         if [ $? -eq 0 ]
                         then
                             #if [ -d ${HOME}/Desktop/${client_dir} -a $? -eq 0 ]
@@ -353,7 +352,9 @@ add_clients()
                         fi
                         ;;
 
-                    2)
+                    2)  
+                        read -p "Enter the NAS server's folder name that is already created: " server_bak_dir
+                        read -p "Enter the NAS server's public ip address: " server_ip
                         ssh $client_priv_ip mkdir /root/Desktop/$client_dir
                         ssh $client_priv_ip sudo mount ${server_ip}:/home/ec2-user/Desktop/${server_bak_dir}  /root/Desktop/${client_dir} &>> /dev/null
                         if [ $? -eq 0 ]
