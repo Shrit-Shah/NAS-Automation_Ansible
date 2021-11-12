@@ -329,7 +329,7 @@ add_clients()
             tput cnorm
             echo ""
 
-            if [ $ping_process -eq 0]
+            if [ $ping_process -eq 0 ]
             then
                 echo -e "\nConnection Successful\n"
                 read -p "Name of backup folder here on the Client: " client_dir
