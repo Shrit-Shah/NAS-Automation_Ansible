@@ -254,31 +254,36 @@ new_setup()
                         echo -e "\nServer configuration successful\n"
                         read -p "Name of backup folder here on the Client: " client_dir
                         mkdir ${HOME}/Desktop/${client_dir}
-                    
-                        spin2 "Mounting client folder onto server folder" &
-                        pid=$!
-                        echo -e "\n"
-                        sudo mount  ${server_ip}:/home/${user_name}/Desktop/${server_bak_dir}  ${HOME}/Desktop/${client_dir} #Mounting directories
-                        mount=$?
-                        sleep 5
-                        echo -e "\n"
-                        kill $pid 2>&1 >> /dev/null
-                        tput cnorm
-                        echo ""
 
-                        if [ $mount -eq 0 ]
+                        if [ $? -eq 0 ]
                         then
-                            #if [ -d ${HOME}/Desktop/${client_dir} -a $? -eq 0 ]
-                            #then    
-                            echo -e "Setup on both client and server \033[1mSUCCESSFULL\033[0m\n\n"
-                            echo -e "Name and location of Backup folder on your client machine having private ip-->(${client_ip}) and Username-->${user_name} is '\033[1m${HOME}/Desktop/${client_dir}\033[0m'\n" 
-                        else 
-                            echo "mount operation on client side FAILED"
+                            spin2 "Mounting client folder onto server folder" &
+                            pid=$!
+                            echo -e "\n"
+                            sudo mount  ${server_ip}:/home/${user_name}/Desktop/${server_bak_dir}  ${HOME}/Desktop/${client_dir} #Mounting directories
+                            mount=$?
+                            sleep 5
+                            echo -e "\n"
+                            kill $pid 2>&1 >> /dev/null
+                            tput cnorm
+                            echo ""
+
+                            if [ $mount -eq 0 ]
+                            then
+                                #if [ -d ${HOME}/Desktop/${client_dir} -a $? -eq 0 ]
+                                #then    
+                                echo -e "Setup on both client and server \033[1mSUCCESSFULL\033[0m\n\n"
+                                echo -e "Name and location of Backup folder on your client machine having private ip-->(${client_ip}) and Username-->${user_name} is '\033[1m${HOME}/Desktop/${client_dir}\033[0m'\n" 
+                            else 
+                                echo "mount operation on client side FAILED"
+                            fi
+    
+                            echo -e "\n Finalizing Setup...\t[This may take a minute]\n"
+                            cp Thank_You.txt ${HOME}/Desktop/${client_dir}/
+                            echo -e "\v\tSetup Successful\n"
+                        else
+                            echo -e "\n ${client_dir} --> folder creation failed!!!"
                         fi
-   
-                        echo -e "\n Finalizing Setup...\t[This may take a minute]\n"
-                        cp Thank_You.txt ${HOME}/Desktop/${client_dir}/
-                        echo -e "\v\tSetup Successful\n"
                     else
                         echo "Server configuration failed"
                     fi
