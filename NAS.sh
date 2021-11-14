@@ -588,7 +588,7 @@ main()
     while [ 0 ]
     do
         echo "-----------------------------------------------------------------------------"
-        echo -e "\v\t\033[1m\033[4mMain menu\033[4m\033[0m\n\n\t1) Setup new storage \n\t2) Add more clients \n\t3) Create compressed archived Backup\n\t4) Remove all NAS connections \n\n\t Press ESC and enter to exit" #Main Menu
+        echo -e "\v\t\033[1m\033[4mMain menu\033[4m\033[0m\n\n\t1) Setup new storage \n\t2) Add more clients \n\t3) Create compressed archived Backup\n\n\t Press ESC and enter to exit" #Main Menu
 
         read  -p "--> " menu_opt
 
@@ -607,9 +607,6 @@ main()
                 Backup_func
                 ;;
 
-            4) 
-                uninstall
-                ;;
 
             $'\e') 
                 echo "Cleaning up and Exiting..."
