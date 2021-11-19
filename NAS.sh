@@ -81,9 +81,10 @@ new_setup()
 
                 #echo -e "\nConfiguring ansible and setting up neccessary config files"
                 echo -e "\nCollecting server --> ${user_name}'s HOME directory path!!!"
-                ssh-keygen -R ${server_ip}
-                ssh ${user_name}@${server_ip} echo $HOME > /tmp/temp.txt
-                server_home_dir=$(cat /tmp/temp.txt)
+                #ssh-keygen -R ${server_ip}
+                #cmd1=$(echo "echo $HOME > /tmp/temp.txt")
+                #ssh ${user_name}@${server_ip} $cmd1
+                read -p "Enter ${server_ip}'s Home location: " server_home_dir
                 client_home_dir=$HOME
 
                 #spin2 "Configuring ansible and setting up neccessary config files  "  &
@@ -118,7 +119,7 @@ new_setup()
                 #echo -e "${server_home_dir}/Desktop/${server_dir} *(rw,no_root_squash)" > ${server_home_dir}/Desktop/.NAS/exports.j2
                 spin2  "Configuring NAS server. Running ansible playbook  "  &
                 pid=$!
-                ansible-playbook ./nas-playbook.yml --extra-vars "server_home_dir=${server_home_dir} server_dir=${server_dir}" >> /dev/null
+                sudo ansible-playbook ./nas-playbook.yml --extra-vars "server_home_dir=${server_home_dir} server_dir=${server_dir}" >> /dev/null
                 play_process=$?
                 echo -e "\n"
                 kill $pid &>> /dev/null

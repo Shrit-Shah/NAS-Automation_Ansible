@@ -25,7 +25,7 @@
     file:
        state: directory
        path: "{{ server_home_dir_internal }}/Desktop/{{ server_dir_internal }}"
-       mode: 0775
+       mode: 0777
 
   - name: enable rpcbind nfslock nfs
     service:
@@ -55,6 +55,6 @@
     - Restart nfs-utils
 
 
-  - name: Disabling firewall permanantly (firewalld module)  
-    shell: systemctl stop --now firewalld
+#  - name: Disabling firewall permanantly (firewalld module)  
+#    shell: systemctl stop --now firewalld
     
