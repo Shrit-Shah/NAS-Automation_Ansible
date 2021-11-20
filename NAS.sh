@@ -215,8 +215,8 @@ new_setup()
         2)
 
             #client_ip=$(dig +short myip.opendns.com @resolver1.opendns.com) # Client Public IP-address
-            #read -p "Enter Public ip-address of the server system: " server_ip
-            server_ip="3.6.173.237"
+            read -p "Enter Public ip-address of the server system: " server_ip
+            
 
             # IP validation - REGEX: ((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}
 
